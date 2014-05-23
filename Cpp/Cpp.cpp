@@ -160,6 +160,7 @@ public:
 typedef char* CharPtrT;
 typedef CharPtrT (*RetCharPtrT)(void);
 typedef RetCharPtrT (*RequiredFuncT)(void);
+typedef void *(*SameTypeRetT)();
 
 
 char *RetCharFunc()
@@ -174,17 +175,22 @@ RetCharPtrT RetFuncPtrFunc()
     return fff;
 }
 
-int _tmain(int argc, _TCHAR* argv[])
+void* funcfunc22()
 {
-    // How do I declare an array of N pointers to functions returning pointers to functions returning pointers to characters ?
+    return nullptr;
+}
+
+void FuncPtr()
+{
+    // Declare an array of N pointers to functions returning pointers to functions returning pointers to characters ?
     // Raw types
     char *ptr;
     char *(*aa1)(void) = RetCharFunc;
     // One var
-    char * (*(*aa2)(void) )(void) = RetFuncPtrFunc;
+    char * (*(*aa2)(void))(void) = RetFuncPtrFunc;
     auto funcRes1 = aa2();
     auto cRes1 = funcRes1();
-    
+
     // Array
     char * (*(*funcArrRaw[10])(void))(void);
     funcArrRaw[0] = RetFuncPtrFunc;
@@ -203,12 +209,13 @@ int _tmain(int argc, _TCHAR* argv[])
     auto funcRes4 = funcArr[0]();
     auto cRes4 = funcRes2();
 
-    // How can I declare a function that returns a pointer to a function of its own type ?
-    //typedef RetCharPtrT (*funcFunc)();
-    //funcFunc funcfunc()
-    //{
-    //    return nullptr;
-    //}
+    // Declare a function that returns a pointer to a function of its own type
+    // ???
+}
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+    FuncPtr();
 
     // Vector insertion
     std::vector<A> vectQWER(10);
@@ -254,8 +261,6 @@ int _tmain(int argc, _TCHAR* argv[])
     size_t hash1 = std::hash<std::string>()("generated_id_0");
     size_t hash2 = std::hash<std::string>()("generated_id_1");
 
-
-    //std::unordered_map<std::string, int> sHash;
 
     A cA1;
     A cA2 = A();
@@ -438,7 +443,6 @@ int _tmain(int argc, _TCHAR* argv[])
     }
 
     printf("\n");
-
 
 	return 0;
 }
