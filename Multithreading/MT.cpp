@@ -160,7 +160,7 @@ void One()
     std::vector<std::thread> thVect;
     for (int i = 0; i < nThreads; i++)
     {
-        thVect.emplace_back([&](Semaphore &s1, int num)
+        thVect.emplace_back([](Semaphore &s1, int num)
         {
             std::this_thread::yield();
             s1.Acquire();
@@ -192,7 +192,7 @@ void SequenceThread(int repTime, int thNum)
     {
         {
             std::unique_lock<std::mutex> lock(seqMutex);
-            while (!seqCV.wait_for(lock, std::chrono::milliseconds(10), [=]() { return bSeqFlag[thNum]; }))
+            while (!seqCV.wait_for(lock, std::chrono::milliseconds(10), [thNum]() { return bSeqFlag[thNum]; }))
             {
                 lock.unlock();
                 std::this_thread::yield();
