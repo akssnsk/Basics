@@ -346,7 +346,6 @@ int main()
 
     bool bRet = IsAnagram("qwert  asdfg1", "asdfgqwert");
 
-    //asdf 
     //PrintDifferent(vect);
 
     return 0;
