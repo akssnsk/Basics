@@ -217,6 +217,28 @@ int _tmain(int argc, _TCHAR* argv[])
 {
     FuncPtr();
 
+    // Vector creation
+    std::vector<A> vS;
+    // If no resize or reserve:
+    // 10 ctors +  10 copy ctors +  numerous (depends on implementation) copy ctors 
+    // mostly because of array reallocation on extension
+    // If resize to 100: 
+    // 100 ctors + 100 copy ctors (extension on next insertion) + 10 ctors + 10 copy ctors 
+    // vS.resize(100);
+    // If reserve: 
+    // 10 ctors +  10 copy ctors
+    // vS.reserve(100);
+    printf("-----------------------------------------------------------\n");
+    for (int i = 0; i < 10; i++)
+    {
+        A s = A();
+        vS.push_back(s);
+    }
+
+    aDefCtr = 0;
+    aCopyCtr = 0;
+    aAssignCtr = 0;
+
     // Vector insertion
     std::vector<A> vectQWER(10);
     printf("\n");

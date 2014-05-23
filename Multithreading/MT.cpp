@@ -139,6 +139,7 @@ void PrintEven(int max)
     return;
 }
 
+// Two threads printing odd and even numbers
 void Three()
 {
     evenReady = true;
@@ -150,6 +151,7 @@ void Three()
     t2.join();
 }
 
+// Implement and test semaphore 
 void One()
 {
     Semaphore sharedSemaphore(2);
@@ -177,31 +179,67 @@ void One()
     }
 }
 
+// Five threads to run run one after another
+#define THREAD_COUNT 5
+std::condition_variable seqCV;
+bool bSeqFlag[THREAD_COUNT];
+std::mutex seqMutex;
+std::thread seqThreads[THREAD_COUNT];
+
+void SequenceThread(int repTime, int thNum)
+{
+    for (int i = 0; i < THREAD_COUNT; i++)
+    {
+        {
+            std::unique_lock<std::mutex> lock(seqMutex);
+            while (!seqCV.wait_for(lock, std::chrono::milliseconds(10), [=]() { return bSeqFlag[thNum]; }))
+            {
+                lock.unlock();
+                std::this_thread::yield();
+                lock.lock();
+            }
+
+            printf("SeqThread %d ", thNum);
+            if (thNum == 4) printf("\n");
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+
+            bSeqFlag[thNum] = false;
+            bSeqFlag[(thNum + 1) % THREAD_COUNT] = true;
+
+            seqCV.notify_one();
+        }
+    }
+
+    return;
+}
+
 void Two()
 {
-    std::vector<Semaphore> vS;
-    // If no resize or reserve:
-    // 10 ctors +  10 copy ctors + 
-    // numerous (depends on implementation) copy ctors mostly because of array reallocation on extension
-    // If resize: 
-    // 100 ctors + 100 copy ctors (extension) + 10 ctors + 10 copy ctors 
-    // vS.resize(100);
-    // If reserve: 
-    // 10 ctors +  10 copy ctors
-    vS.reserve(100);
-    printf("-----------------------------------------------------------\n");
-    for (int i = 0; i < 10; i++)
+    std::random_device rd;
+    std::default_random_engine rng(rd());
+    std::uniform_int_distribution<int> iUrandStartFrom(0, THREAD_COUNT-1);
+
+    int iRepetitionNumber = 3;
+    int iStartFrom = iUrandStartFrom(rng);
+    bSeqFlag[iStartFrom] = true;
+    for (int i = 0; i < THREAD_COUNT; i++)
     {
-        Semaphore s = Semaphore(2); // Missed this point as I always use "Semaphore s(0, 2);" style
-        vS.push_back(s);
+        seqThreads[i] = std::thread(SequenceThread, iRepetitionNumber, i);
+    }
+
+    // Wait till they done
+    for (auto &t : seqThreads)
+    {
+        t.join();
     }
 }
 
 int main(int argc, char* argv[])
 {
     One();
-    //Two();
-    //Three();
+    Two();
+    Three();
 	
     return 0;
 }
