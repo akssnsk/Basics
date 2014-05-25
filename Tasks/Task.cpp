@@ -14,8 +14,9 @@
 #include <random>
 #include <deque>
 #include <unordered_map>
+#include <string>
 
-typedef std::vector<std::vector<int>> SlnType;
+typedef std::vector<int> SlnType;
 
 //int Knapsack(int W, int wt[], int val[], int n)
 //{
@@ -77,73 +78,65 @@ void quickSort(std::vector<int> &ar, int ar_size)
     return QuickSortHelper(ar, 0, ar.size() - 1);
 }
 
-
-
-SlnType::value_type FindDecentNum(int length)
+SlnType FindDecentNum(const int length)
 {
-    SlnType::value_type retValue;
     if (length < 3)
-        return retValue;
+        return SlnType();
 
+    SlnType retValue(length);
     int mod3 = length % 3;
     if (mod3 == 0)
     {
-        retValue.resize(length);
-        std::fill(retValue.begin(), retValue.end(), 5);
+        std::fill_n(retValue.begin(), length, 5);
         return retValue;
     }
 
     int numThree = length % 5;              // 1
     int numFive = length - numThree;        // 10
 
-    while (!(numFive % 3 == 0 && numThree % 5 == 0))
+    while (numFive > 0 && !(numFive % 3 == 0 && numThree % 5 == 0))
     {
         numFive -= 1;                    // 9 8 7 6
         numThree = (length - numFive);   // 2 3 4 5
     }
 
     if (numFive == 0 && numThree % 5 != 0)
-        return retValue;
+        return SlnType();
 
-    retValue.resize(length);
-    std::fill(retValue.begin(), retValue.begin()+numFive, 5);
-    std::fill(retValue.begin()+numFive, retValue.end(), 3);
+    std::fill_n(retValue.begin(), numFive, 5);
+    std::fill_n(retValue.begin() + numFive, numThree, 3);
     
     return retValue;
 }
 
 int Sherlock()
 {
-    int numTestCases = 1;
+    int numTestCases = 0;
 
     std::cin >> numTestCases;
+    std::cin.ignore();
 
     if (numTestCases < 1)
         return 0;
 
     std::vector<int> cases(numTestCases);
-
     for (int i = 0; i < numTestCases; i++)
     {
         std::cin >> cases[i];
-    }
-
-    SlnType solutions(numTestCases);
-
-    for (int i = 0; i < numTestCases; i++)
-    {
-        solutions[i] = FindDecentNum(cases[i]);
+        std::cin.ignore();
     }
 
     for (int i = 0; i < numTestCases; i++)
     {
-        if (solutions[i].size() == 0)
+        SlnType numRes = FindDecentNum(cases[i]);
+
+        if (numRes.size() == 0)
         {
             std::cout << -1;
         }
         else
         {
-            for (auto n : solutions[i]) std::cout << n;
+            for (auto n : numRes) std::cout << n;
         }
 
         std::cout << std::endl;
@@ -258,23 +251,77 @@ std::vector<int> PrepareVector(int length)
 // 12340
 // 23401
 
-void PrintDifferent(const std::vector<int> dataArr)
-{
-    std::map<int, int> dataMap;
+typedef std::unordered_map<char, size_t> HashType;
+typedef std::pair<char, short> CharCounterT;
+typedef std::vector<CharCounterT> CharAmtType;
 
-    for (auto i : dataArr)
+int AnagramDifference(const std::string &str)
+{
+    if (str.size() % 2 != 0)
+        return -1;
+
+    if (str.empty())
+        return -1;
+
+    size_t ll = str.size();
+    size_t mid = ll / 2;
+    std::string strA = str.substr(0, mid);
+    std::string strB = str.substr(mid, ll);
+
+    CharAmtType hash1(26); // d - 1, e -1, .. r-1
+    CharAmtType hash2(26); // d-1...
+
+    // Count chars
+    for (auto c1 : strA) 
+    { 
+        hash1[c1 - 'a'].first = c1;
+        hash1[c1-'a'].second++; 
+    }
+    for (auto c2 : strB) { hash2[c2 - 'a'].first = c2; hash2[c2 - 'a'].second++; }
+
+    //auto cmpFunc = [=](CharCounterT &ci1, CharCounterT &ci2)
+    //{
+    //    return !(ci1.second < ci2.second);
+    //};
+
+    //std::sort(hash1.begin(), hash1.end(), cmpFunc);
+    //std::sort(hash2.begin(), hash2.end(), cmpFunc);
+
+    int iRes = 0;
+    for (size_t i = 0; i < hash1.size(); i++)
     {
-        dataMap[i]++;
+        iRes += abs(hash1[i].second - hash2[i].second);
     }
 
+    return iRes / 2;
+}
 
+void AnagramDifferenceStarter()
+{
+    int numTestCases = 1;
+    std::cin >> numTestCases;
+
+    if (numTestCases < 1)
+        return;
+
+    std::cin.ignore();
+
+    std::vector<std::string> strVect(numTestCases);
+    for (int i = 0; i < numTestCases; i++)
+    {
+        std::cin >> strVect[i];
+    }
+
+    for (auto &s : strVect)
+    {
+        int iRes = AnagramDifference(s);
+        std::cout << iRes << std::endl;
+    }
 
 }
 
 bool IsAnagram(const std::string &str1, const std::string &str2)
 {
-    typedef std::unordered_map<char, size_t> HashType;
-
     // Test input
     if (str1.empty() && str2.empty())
         return true;
@@ -344,10 +391,12 @@ int main()
 
     //KnapsackProblem();
 
-    bool bRet = IsAnagram("qwert  asdfg1", "asdfgqwert");
-
-    //PrintDifferent(vect);
+    //int d = AnagramDifference("dnqaurlplofnrtmh");
+    //AnagramDifferenceStarter();
+    //bool bRet = IsAnagram("qwert  asdfg1", "asdfgqwert");
 
     return 0;
 }
+
+
 
