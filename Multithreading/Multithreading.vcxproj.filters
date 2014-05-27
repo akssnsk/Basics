@@ -21,5 +21,8 @@
     <ClCompile Include="MT.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SpinLock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

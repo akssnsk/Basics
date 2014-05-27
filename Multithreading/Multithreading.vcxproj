@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MT.cpp" />
+    <ClCompile Include="SpinLock.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

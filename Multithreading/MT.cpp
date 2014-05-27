@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+
 #include <chrono>
 #include <mutex>
 #include <thread>
@@ -7,17 +8,24 @@
 #include <random>
 #include <condition_variable>
 
+#include <windows.h>
+
+void SpinLockRun();
+
+
 // Semaphore
 class Semaphore
 {
 private:
     std::mutex m;
+    BOOL m_bMutex;
+
     long currValue;
     long maxValue;
 
 public:
     Semaphore(int maxParam)
-        : currValue(maxParam), maxValue(maxParam)
+        : currValue(maxParam), maxValue(maxParam), m_bMutex(FALSE)
     {
         printf("Semaphore ctor\n");
     }
@@ -43,41 +51,17 @@ public:
         printf("Assignment op\n");
     }
 
-    long CAS(long *var, long oldval, long newval)
+    long CompareAndSwap(long *var, long newval, long oldval)
     {
         if (*var == oldval) {
             *var = newval;
-            return 0;
+//            return newval;
         }
         return oldval;
     }
 
-    void Acquire()
+    void AcquireWithMutex()
     {
-        //while (true)
-        //{
-        //    long new = curr;
-        //    if (_InterlockedCompareExchange(&curr, oldVal + 1, oldVal) == 0) {
-        //        if (curr < maxVal)
-        //            return;
-        //    }
-        //    std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        //}
-
-        // option with CAS (???)
-        //while (true)
-        //{
-        //    int oldlock = curr;
-        //    if (oldlock < maxVal) {
-        //        if (CAS(&curr, oldlock, oldlock + 1) == 0)
-        //            return;
-        //        
-        //        //printf("waiting ");
-        //        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        //    }
-        //}
-
-
         // Option with mutex
         std::unique_lock<std::mutex> lock(m);
         while (currValue == 0)
@@ -91,12 +75,51 @@ public:
         currValue--;
     }
 
-    void Release()
+    void ReleaseWithMutex()
     {
         std::unique_lock<std::mutex> lock(m);
 
         if (currValue < maxValue)
             currValue++;
+
+        return;
+    }
+
+    void AcquireSpin()
+    {
+        while (true)
+        {
+            while (InterlockedCompareExchange((LONG *)&m_bMutex, TRUE, FALSE) != FALSE);
+
+            if (currValue > 0)
+                break;
+
+            m_bMutex = FALSE;
+        }
+
+        // option with CAS
+        //while (true)
+        //{
+        //    while (CompareAndSwap((LONG *)&m_bMutex, TRUE, FALSE) != FALSE);
+
+        //    if (currValue > 0)
+        //        break;
+        //    
+        //    m_bMutex = FALSE;
+        //}
+
+        currValue--;
+        m_bMutex = FALSE;
+    }
+
+    void ReleaseSpin()
+    {
+        while (InterlockedCompareExchange((LONG *)&m_bMutex, TRUE, FALSE) != FALSE);
+
+        if (currValue < maxValue)
+            currValue++;
+
+        m_bMutex = FALSE;
 
         return;
     }
@@ -163,10 +186,10 @@ void One()
         thVect.emplace_back([](Semaphore &s1, int num)
         {
             std::this_thread::yield();
-            s1.Acquire();
+            s1.AcquireWithMutex();
             printf("Thread %2d aquired semaphore\n", num);
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            s1.Release();
+            s1.ReleaseWithMutex();
         },
         std::ref(sharedSemaphore), i);
     }
@@ -177,6 +200,8 @@ void One()
     {
         t.join();
     }
+
+    return;
 }
 
 // Five threads to run run one after another
@@ -238,9 +263,11 @@ void Two()
 int main(int argc, char* argv[])
 {
     One();
-    Two();
-    Three();
-	
+    //Two();
+    //Three();
+
+    //SpinLockRun();
+
     return 0;
 }
 
