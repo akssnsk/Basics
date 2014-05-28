@@ -376,6 +376,64 @@ size_t BinSearch(const std::vector<int> &searchVector, size_t i, size_t j)
     return (leftVal <= rightVal) ? leftMinIdx : rightMinIdx;
 }
 
+int FindMedian2(const std::vector<int> &vInput, int minParam, int maxParam)
+{
+    std::vector<int> vInputCopy = vInput;
+
+    // nth_element works in linear time
+    std::nth_element(std::begin(vInputCopy), vInputCopy.begin() + vInputCopy.size() / 2, vInputCopy.end());
+    return vInputCopy[vInput.size() / 2];
+}
+
+int FindMedian1(const std::vector<int> &vInput, int minParam, int maxParam)
+{
+    int kindAmount = maxParam - minParam + 1;
+
+    std::vector<int> HashCounter(kindAmount);
+
+    for (auto &i : vInput)
+    {
+        HashCounter[i-minParam]++;
+    }
+
+    // hash table iterators
+    size_t i = 0; size_t j = 0;
+
+    while (i < HashCounter.size() && HashCounter[i] == 0) i++;
+    while (j < HashCounter.size() && HashCounter[HashCounter.size() - j - 1] == 0) j++;
+
+    // source vector iterators
+    size_t i2 = HashCounter[i]-1; i++;
+    size_t j2 = HashCounter[HashCounter.size() - j - 1]; j++;
+
+    size_t distance = std::max(i2, j2);
+    while (distance < vInput.size()/2)
+    {
+        if (i2 < distance)
+        {
+            while (i < HashCounter.size() && HashCounter[i] == 0) i++;
+            i2 += HashCounter[i]; i++;
+        }  
+        else
+        {
+            while (j < HashCounter.size() && HashCounter[HashCounter.size() - j - 1] == 0) j++;
+            size_t idxR = HashCounter.size() - j - 1;
+            j2 += HashCounter[idxR]; j++;
+        }
+
+        distance = std::max(i2, j2);
+    }
+
+        // src: 1111133^^77777779
+
+        // table: 0123456789
+        //        0502000701
+    size_t idxL = i;
+    size_t idxR = HashCounter.size() - j - 1;
+
+    return vInput[i2];
+}
+
 int main()
 {
     //Sherlock();
@@ -395,8 +453,16 @@ int main()
     //AnagramDifferenceStarter();
     //bool bRet = IsAnagram("qwert  asdfg1", "asdfgqwert");
 
+    //std::vector<int> vect = { 1, 1, 1, 1, 1, 14, 15, 44, 97 };
+    std::vector<int> vect = { 1, 1, 1, 1, 1, 14, 15, 44, 97, 97 };
+
+    int maxVal = *std::max_element(vect.begin(), vect.end());
+    int minVal = *std::min_element(vect.begin(), vect.end());
+
+    int iRes1 = FindMedian1(vect, minVal, maxVal);
+
+    int iRes2 = FindMedian2(vect, minVal, maxVal);
+
     return 0;
 }
-
-
 
