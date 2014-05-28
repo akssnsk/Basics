@@ -98,8 +98,6 @@ void SpinLockRun()
     thVector.reserve(numThread);
     
     int i = 0;
-    //std::generate_n(std::back_inserter(thVector), numThread, std::bind(SpinLockTest, i++));
-
     for (; i < numThread; i++)
     {
         //thVector.emplace_back(SpinLockTest, i);
