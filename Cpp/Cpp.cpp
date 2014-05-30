@@ -146,6 +146,15 @@ void stringConst(char* str)
     str[1] = 'Q';
 }
 
+class SmallCmp
+{
+public:
+    size_t operator()(const std::string &str1, const std::string &str2) const
+    {
+        return str1[0] == str2[0];
+    }
+};
+
 class SmallHash
 {
 public:
@@ -282,6 +291,16 @@ int _tmain(int argc, _TCHAR* argv[])
     size_t hash02 = ush.hash_function()("generated_id_1");
     size_t hash1 = std::hash<std::string>()("generated_id_0");
     size_t hash2 = std::hash<std::string>()("generated_id_1");
+
+    auto lf = ssh.load_factor();
+    auto mlf = ssh.max_load_factor();
+
+    // Hash insertion with custom hash func, compare func and collisions
+    std::unordered_map<std::string, int, SmallHash, SmallCmp> ssh2;
+    res = ssh2.insert({ "string1", 1 });
+    res = ssh2.insert({ "string2", 2 });
+    res = ssh2.insert({ "zzstr11", 3 });
+    res = ssh2.insert({ "string2", 2 });
 
 
     A cA1;
