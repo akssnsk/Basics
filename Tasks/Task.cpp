@@ -206,6 +206,43 @@ std::string RemoveDuplicates(std::string str)
     return str.substr(0, iSpace+1);
 }
 
+void Rotate(std::vector<int> &arr, size_t shift)
+{
+    if (arr.empty() || shift == 0 || shift == arr.size())
+        return;
+
+    if (shift > arr.size())
+        shift %= arr.size();
+
+    // description
+    //reverse(first, last);
+    //reverse(first, middle);
+    //reverse(middle, last);
+
+    // stl helpers
+    //std::reverse(arr.begin(), arr.end());
+    //std::reverse(arr.begin(), arr.begin() + shift);
+    //std::reverse(arr.begin() + shift, arr.end());
+
+    size_t nElems = arr.size();
+    for (size_t i = 0; i < nElems/2; i++)
+    {
+        std::swap(arr[i], arr[nElems-i-1]);
+    }
+
+    for (size_t i1 = 0; i1 < shift/2; i1++)
+    {
+        std::swap(arr[i1], arr[shift-i1-1]);
+    }
+
+    for (size_t i2 = 0; i2 < (nElems - shift)/2; i2++)
+    {
+        std::swap(arr[shift + i2], arr[nElems-i2-1]);
+    }
+
+    return;
+}
+
 std::vector<int> PrepareVector(int length)
 {
     std::vector<int> sortVect;
@@ -218,7 +255,7 @@ std::vector<int> PrepareVector(int length)
         sortVect.push_back(val);
     }
 
-    //std::sort(sortVect.begin(), sortVect.end());
+    //std::sort(sortVect.begin(), sortVect.end()); // or
     quickSort(sortVect, sortVect.size());
 
     size_t shift_idx = rand() % length;
@@ -227,20 +264,11 @@ std::vector<int> PrepareVector(int length)
         shift_idx = rand() % length;
     }
 
-    std::vector<int> retVect(sortVect.size());
-
-    size_t i = 0;
-    for (; i < shift_idx; i++)
-    {
-        retVect[i] = sortVect[sortVect.size() - shift_idx + i];
-    }
-    for (; i < sortVect.size(); i++)
-    {
-        retVect[i] = sortVect[i - shift_idx];
-    }
+    //std::rotate(sortVect.begin(), sortVect.begin() + shift_idx, sortVect.end()); // or
+    Rotate(sortVect, shift_idx);
 
     // Here there is rotated 
-    return retVect;
+    return sortVect;
 }
 
 // 2 
@@ -357,7 +385,6 @@ bool IsAnagram(const std::string &str1, const std::string &str2)
     return true;
 }
 
-
 size_t BinSearch(const std::vector<int> &searchVector, size_t i, size_t j)
 {
     if (searchVector.empty())
@@ -434,6 +461,58 @@ int FindMedian1(const std::vector<int> &vInput, int minParam, int maxParam)
     return vInput[i2];
 }
 
+void ClosestNumbers()
+{
+    size_t numTestCases = 0;
+
+    std::cin >> numTestCases;
+    std::cin.ignore();
+
+    if (numTestCases < 1)
+        return;
+
+    std::vector<int> array(numTestCases);
+    for (size_t i = 0; i < numTestCases; i++)
+    {
+        std::cin >> array[i];
+    }
+
+    std::sort(array.begin(), array.end());
+
+    unsigned int minDiff = abs(array[1] - array[0]);
+    std::vector<int> diffStorage;
+    diffStorage.push_back(1);
+
+    for (size_t i = 2; i < numTestCases; i++)
+    {
+        unsigned int diffTmp = abs(array[i] - array[i - 1]);
+
+        if (diffTmp < minDiff)
+        {
+            diffStorage.clear();
+            minDiff = diffTmp;
+        }
+
+        if (diffTmp == minDiff)
+        {
+            diffStorage.push_back(i);
+        }
+    }
+
+    size_t numDiffs = diffStorage.size();
+    for (size_t i2 = 0; i2 < numDiffs; i2++)
+    {
+        size_t minIdx1 = diffStorage[i2] - 1;
+        size_t minIdx2 = diffStorage[i2];
+        
+        std::cout << array[minIdx1] << " " << array[minIdx2] << " ";
+    }
+
+    std::cout << std::endl;
+
+    return;
+}
+
 int main()
 {
     //Sherlock();
@@ -444,8 +523,8 @@ int main()
     //std::string sss = "this is my string with duplicates"; std::string sss = " ";
     //std::string str2 = RemoveDuplicates(sss);
 
-    //auto vect = PrepareVector(25);
-    //auto res = BinSearch(vect, 0, vect.size());
+    auto vect = PrepareVector(25);
+    auto res = BinSearch(vect, 0, vect.size());
 
     //KnapsackProblem();
 
@@ -454,14 +533,16 @@ int main()
     //bool bRet = IsAnagram("qwert  asdfg1", "asdfgqwert");
 
     //std::vector<int> vect = { 1, 1, 1, 1, 1, 14, 15, 44, 97 };
-    std::vector<int> vect = { 1, 1, 1, 1, 1, 14, 15, 44, 97, 97 };
+    //std::vector<int> vect = { 1, 1, 1, 1, 1, 14, 15, 44, 97, 97 };
 
-    int maxVal = *std::max_element(vect.begin(), vect.end());
-    int minVal = *std::min_element(vect.begin(), vect.end());
+    //int maxVal = *std::max_element(vect.begin(), vect.end());
+    //int minVal = *std::min_element(vect.begin(), vect.end());
 
-    int iRes1 = FindMedian1(vect, minVal, maxVal);
+    //int iRes1 = FindMedian1(vect, minVal, maxVal);
 
-    int iRes2 = FindMedian2(vect, minVal, maxVal);
+    //int iRes2 = FindMedian2(vect, minVal, maxVal);
+
+    //ClosestNumbers();
 
     return 0;
 }
