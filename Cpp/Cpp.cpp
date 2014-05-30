@@ -56,10 +56,10 @@ private:
 
 class HeapOnly {
 public:
-    HeapOnly() {}
-    void destroy() const { delete this; }
-protected:
-    ~HeapOnly() {}
+    HeapOnly() {};
+    void destroy() const { delete this; };
+
+    ~HeapOnly() {} ;
 };
 
 StackOnly s1;
