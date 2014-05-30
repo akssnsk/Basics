@@ -67,7 +67,8 @@ StackOnly s1;
 
 HeapOnly func()  // Compiler error because destructor of temporary is protected
 {
-    HeapOnly *hoptr = new HeapOnly; // This is ok. No destructor is invoked automatically for heap-based objects
+// This is ok. No destructor is invoked automatically for heap-based objects
+    HeapOnly *hoptr = new HeapOnly;
     return *hoptr;
 }
 
@@ -174,7 +175,7 @@ typedef void *(*SameTypeRetT)();
 
 char *RetCharFunc()
 {
-    static char *s_string = "RetString";
+    static char s_string[] = "RetString";
     return s_string;
 }
 
@@ -222,7 +223,7 @@ void FuncPtr()
     // ???
 }
 
-int _tmain(int argc, _TCHAR* argv[])
+int main(int argc, char* argv[])
 {
     FuncPtr();
 
@@ -389,8 +390,8 @@ int _tmain(int argc, _TCHAR* argv[])
     // Const
     char ssstr[] = "My string";
     stringConst(ssstr);
-    char *pSsstr = "My string2";
-    stringConst(ssstr); // FAIL: cannot change ???????????
+//    char *pSsstr = "My string2";
+//    stringConst(ssstr); // FAIL: cannot change ???????????
 
     // Primes
     std::vector<bool> primeRes = Eratosphenes(10000);
@@ -422,18 +423,18 @@ int _tmain(int argc, _TCHAR* argv[])
     std::cout << "The required element is " << v[3] << '\n';
 
 
-    std::map<int, std::wstring> om;
-    om.insert({2, L"two"});
-    om.insert(std::make_pair(3, L"three"));
-    om.insert(std::make_pair(5, L"five"));
-    om.insert(std::make_pair(1, L"one"));
-    om.insert(std::make_pair(4, L"four"));
-    om.insert(std::make_pair(6, L"six"));
-    om.insert(std::make_pair(7, L"seven"));
+    std::map<int, std::string> om;
+    om.insert({2, "two"});
+    om.insert(std::make_pair(3, "three"));
+    om.insert(std::make_pair(5, "five"));
+    om.insert(std::make_pair(1, "one"));
+    om.insert(std::make_pair(4, "four"));
+    om.insert(std::make_pair(6, "six"));
+    om.insert(std::make_pair(7, "seven"));
 
     for (auto i = om.begin(); i != om.end(); i++)
     {
-        _tprintf(_T("(%d, %s) "), i->first, i->second);
+        printf("(%d, %s) ", i->first, i->second.c_str());
     }
 
     printf("\n");
@@ -451,21 +452,21 @@ int _tmain(int argc, _TCHAR* argv[])
 
     for (auto i = om.begin(); i != om.end(); i++)
     {
-        _tprintf(_T("(%d, %S) "), i->first, i->second);
+        printf("(%d, %S) ", i->first, i->second.c_str());
     }
 
     printf("\n");
 
-    typedef std::unordered_map<int, std::wstring> MyHash;
+    typedef std::unordered_map<int, std::string> MyHash;
     MyHash um;
 
     int c11 = um.bucket_count();
 
-    um.insert({ 2, L"two" });
-    um.insert(std::make_pair(3, L"three"));
-    um.insert(std::make_pair(5, L"five"));
-    um.insert(std::make_pair(1, L"one"));
-    um.insert(std::make_pair(4, L"four"));
+    um.insert({ 2, "two" });
+    um.insert(std::make_pair(3, "three"));
+    um.insert(std::make_pair(5, "five"));
+    um.insert(std::make_pair(1, "one"));
+    um.insert(std::make_pair(4, "four"));
 
     MyHash::hasher hfn = um.hash_function();
 
@@ -480,7 +481,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
     for (auto i = um.begin(); i != um.end(); i++)
     {
-        _tprintf(_T("(%d, %S) "), i->first, i->second);
+        printf("(%d, %S) ", i->first, i->second.c_str());
     }
 
     printf("\n");
