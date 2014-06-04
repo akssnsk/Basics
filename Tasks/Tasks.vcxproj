@@ -82,10 +82,12 @@
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Tasks.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tasks.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="TaskStarter.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
