@@ -374,10 +374,14 @@ bool IsAnagram(const std::string &str1, const std::string &str2)
     if (hash1.size() != hash2.size())
         return false;
 
+    
     HashType::iterator i1 = hash1.begin();
-    HashType::iterator i2 = hash2.begin();
-    for (; i1 != std::end(hash1); ++i1, ++i2)
+    for (; i1 != std::end(hash1); ++i1)
     {
+        auto i2 = hash2.find(i1->first);
+        if (i2 == hash2.end())
+            return false;
+        
         if (i1->second != i2->second)
             return false;
     }
@@ -531,6 +535,7 @@ int main()
     //int d = AnagramDifference("dnqaurlplofnrtmh");
     //AnagramDifferenceStarter();
     //bool bRet = IsAnagram("qwert  asdfg1", "asdfgqwert");
+    bool bRet = IsAnagram("str1", "str2");
 
     //std::vector<int> vect = { 1, 1, 1, 1, 1, 14, 15, 44, 97 };
     //std::vector<int> vect = { 1, 1, 1, 1, 1, 14, 15, 44, 97, 97 };
