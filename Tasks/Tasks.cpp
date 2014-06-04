@@ -3,20 +3,7 @@
 
 #include "stdafx.h"
 
-#include <time.h>
-
-#include <iostream>
-#include <iterator>
-#include <vector>
-#include <map>
-#include <list>
-#include <algorithm>
-#include <random>
-#include <deque>
-#include <unordered_map>
-#include <string>
-
-typedef std::vector<int> SlnType;
+#include "Tasks.h"
 
 //int Knapsack(int W, int wt[], int val[], int n)
 //{
@@ -245,9 +232,9 @@ void Rotate(std::vector<int> &arr, size_t shift)
 
 std::vector<int> PrepareVector(int length)
 {
-    std::vector<int> sortVect;
-
     srand((unsigned int)time(NULL));
+
+    std::vector<int> sortVect(length);
 
     for (int ii = 0; ii < length; ii++)
     {
@@ -517,7 +504,7 @@ void ClosestNumbers()
     return;
 }
 
-int main()
+int AllTasks()
 {
     //Sherlock();
 

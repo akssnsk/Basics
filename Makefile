@@ -1,4 +1,4 @@
-SUBDIRS = Cpp Tasks
+SUBDIRS = Cpp Tasks Tests
  
 .PHONY: subdirs $(SUBDIRS)
  

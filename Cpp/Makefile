@@ -1,6 +1,6 @@
 CC=g++
 CFLAGS= -c -I. -std=c++11 -pthread -Wl,--no-as-needed
-LDFLAGS= -I. -lm -pthread -lpthread
+LDFLAGS= -I. -lm -pthread -lpthread -lsasl2
 SOURCES= stdafx.cpp Cpp.cpp 
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=Cpp
