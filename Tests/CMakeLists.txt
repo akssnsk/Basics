@@ -5,7 +5,6 @@ SET(CMAKE_CXX_FLAGS "-std=gnu++11") #Turn on C++11 Support
 set(TASKS_TO_TEST Tasks.cpp)
 set(CPP_TO_TEST Cpp.cpp)
 set(UNIT_TESTS tasks_test.cpp cpp_test.cpp)
-set(MAIN_FILE main.cpp)
 set(SRC_DIR ..)
 
 find_package(GTest REQUIRED)
