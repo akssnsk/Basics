@@ -100,7 +100,7 @@ bool IsPrime(int n)
     {
         if (n%i == 0)
         {
-            bool retVal = false;
+            retVal = false;
             break;
         }
     }
@@ -225,6 +225,9 @@ void FuncPtr()
 
 int main(int argc, char* argv[])
 {
+    bool bb = IsPrime(10);
+
+
     FuncPtr();
 
     // Vector creation
