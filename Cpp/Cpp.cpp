@@ -3,17 +3,7 @@
 
 #include "stdafx.h"
 
-#include <iostream>
-#include <string>
-#include <map>
-#include <unordered_map>
-#include <algorithm>
-#include <functional>
-#include <chrono>
-#include <thread>
-#include <cmath>
-
-#include <stdio.h>
+#include "Cpp.h"
 
 static int aDefCtr = 0;
 static int aCopyCtr = 0;
@@ -223,7 +213,7 @@ void FuncPtr()
     // ???
 }
 
-int main(int argc, char* argv[])
+void CppStarter()
 {
     bool bb = IsPrime(10);
 
@@ -488,9 +478,5 @@ int main(int argc, char* argv[])
     }
 
     printf("\n");
-
-    // git test
-
-    return 0;
 }
 
