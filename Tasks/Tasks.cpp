@@ -1,8 +1,6 @@
 // ConsoleApplication6.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
-
 #include "Tasks.h"
 
 //int Knapsack(int W, int wt[], int val[], int n)
