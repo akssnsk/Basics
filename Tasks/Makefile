@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS= -c -I. -std=c++11 -pthread -Wl,--no-as-needed
 LDFLAGS= -I. -lm -pthread -lpthread
-SOURCES= stdafx.cpp Tasks.cpp TaskStarter.cpp
+SOURCES= Tasks.cpp TaskStarter.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=Tasks
 
