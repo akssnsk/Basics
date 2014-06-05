@@ -3,6 +3,7 @@
 
 #include "Tasks.h"
 
+
 //int Knapsack(int W, int wt[], int val[], int n)
 //{
 //    if (n == 0)
@@ -502,20 +503,9 @@ void ClosestNumbers()
     return;
 }
 
-struct Node
-{
-    int iWeight;
-    std::list<int> conn;
-};
-typedef std::vector<Node> NodeType;
-
-void CutTheTreePreparer(std::istream &input, NodeType *edges);
-int CutTheTreeSolver(const NodeType &nodes);
-void CutTheTree();
-
 void CutTheTree()
 {
-    NodeType edges;
+    GraphType edges;
 
     CutTheTreePreparer(std::cin, &edges);
 
@@ -523,7 +513,27 @@ void CutTheTree()
     std::cout << iRes << std::endl;
 }
 
-void CutTheTreePreparer(std::istream &input, NodeType *edges)
+void CutTheTreePrep()
+{
+    GraphType edges;
+
+    std::string input =
+        "6\n"
+        "100 200 100 500 100 600\n"
+        "1 2 "
+        "2 3\n"
+        "2 5\n"
+        "4 5\n"
+        "5 6\n";
+
+    std::istringstream inStr(input);
+
+    CutTheTreePreparer(inStr, &edges);
+    
+    int i = 2 + 2;
+}
+
+void CutTheTreePreparer(std::istream &input, GraphType *edges)
 {
     size_t intemsCount = 0;
     input >> intemsCount;
@@ -546,17 +556,28 @@ void CutTheTreePreparer(std::istream &input, NodeType *edges)
         input >> from >> to;
         input.ignore();
 
-        (*edges)[from].conn.push_back(to);
-        (*edges)[to].conn.push_back(from);
+        (*edges)[from-1].conn.push_back(to-1);
+        (*edges)[to-1].conn.push_back(from-1);
     }
 }
 
-int TreeTraverse(const NodeType &verts, const std::pair<int, int> &cutEdge, int startNode, std::vector<int> &marks)
+int TreeTraverse(const GraphType &verts, const std::pair<int, int> &cutEdge, size_t startNode, std::vector<int> &visited)
 {
+    if (verts.size() == 0)
+        return -1;
+
+    if (verts.size() < startNode)
+        return -1;
+
+    std::stack<int> traverseStack;
+    traverseStack.push(startNode);
+
+
+
     return 0;
 }
 
-int CutTheTreeSolver(const NodeType &verts)
+int CutTheTreeSolver(const GraphType &verts)
 {
     int retVal = 0;
 
@@ -620,7 +641,8 @@ int AllTasks()
 
     //ClosestNumbers();
 
-    CutTheTree();
+    CutTheTreePrep();
+    //CutTheTree();
 
     return 0;
 }
