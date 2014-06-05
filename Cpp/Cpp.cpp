@@ -192,16 +192,16 @@ void FuncPtr()
 {
     // Declare an array of N pointers to functions returning pointers to functions returning pointers to characters
     // Raw types
-    char *ptr;
+    char *ptr = nullptr;
     char *(*aa1)(void) = RetCharFunc;
 
     // One var
-    char * (*(*aa2)(void))(void) = RetFuncPtrFunc;
+    char *(*(*aa2)(void))(void) = RetFuncPtrFunc;
     auto funcRes1 = aa2();
     auto cRes1 = funcRes1();
 
     // Array
-    char * (*(*funcArrRaw[10])(void))(void);
+    char *(*(*funcArrRaw[10])(void))(void);
     funcArrRaw[0] = RetFuncPtrFunc;
     auto funcRes2 = funcArrRaw[0]();
     auto cRes2 = funcRes2();
@@ -226,8 +226,8 @@ void FuncPtr()
     auto pff22 = pff11();
 
     // Using raw pointer
-    void *(*fretf)();
-    void*(*(*pfretf)())() = funcfunc22;
+    void *(*fretf)() = nullptr;             // initial function 
+    void *(*(*pfretf)())() = funcfunc22;    // pointer to function
 
     auto pff = pfretf();
     auto pff2 = pff();
@@ -237,6 +237,11 @@ void FuncPtr()
 
 void CppProblemsRun()
 {
+    int iVar = 1;
+    iVar = iVar++;
+    int iLen = 3;
+    iVar = iVar++ % iLen, 4 , 6;
+
     bool bb = IsPrime(10);
 
 
