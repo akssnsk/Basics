@@ -173,17 +173,28 @@ RetCharPtrT RetFuncPtrFunc()
     return fff;
 }
 
-void* funcfunc22()
+typedef void* (*funcptr)();	     /* generic function pointer */
+typedef funcptr(*ptrfuncptr)();  /* ptr to fcn returning g.f.p. */
+
+funcptr funcfunc22(), funcfunc33();
+
+funcptr funcfunc22()
 {
-    return nullptr;
+    return (funcptr)funcfunc33;
+}
+
+funcptr funcfunc33()
+{
+    return (funcptr)funcfunc22;
 }
 
 void FuncPtr()
 {
-    // Declare an array of N pointers to functions returning pointers to functions returning pointers to characters ?
+    // Declare an array of N pointers to functions returning pointers to functions returning pointers to characters
     // Raw types
     char *ptr;
     char *(*aa1)(void) = RetCharFunc;
+
     // One var
     char * (*(*aa2)(void))(void) = RetFuncPtrFunc;
     auto funcRes1 = aa2();
@@ -196,7 +207,7 @@ void FuncPtr()
     auto cRes2 = funcRes2();
 
     // Typedefs
-    // One
+    // One var
     RequiredFuncT funcOne = RetFuncPtrFunc;
     auto funcRes3 = funcOne();
     auto cRes3 = funcRes3();
@@ -208,10 +219,23 @@ void FuncPtr()
     auto cRes4 = funcRes2();
 
     // Declare a function that returns a pointer to a function of its own type
-    // ???
+    // Using typedefs
+
+    ptrfuncptr pFunc11 = funcfunc22;
+    auto pff11 = pFunc11();
+    auto pff22 = pff11();
+
+    // Using raw pointer
+    void *(*fretf)();
+    void*(*(*pfretf)())() = funcfunc22;
+
+    auto pff = pfretf();
+    auto pff2 = pff();
+
+    return;
 }
 
-void CppStarter()
+void CppProblemsRun()
 {
     bool bb = IsPrime(10);
 

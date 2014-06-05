@@ -14,4 +14,4 @@ bool IsPrime(int n);
 int NumBit(int num);
 std::vector<bool> Eratosphenes(int limit);
 
-void CppStarter();
+void CppProblemsRun();

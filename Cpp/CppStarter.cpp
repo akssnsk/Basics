@@ -2,6 +2,6 @@
 
 int main(int argc, char* argv[])
 {
-	CppStarter();
+	CppProblemsRun();
 	return 0;
 }
