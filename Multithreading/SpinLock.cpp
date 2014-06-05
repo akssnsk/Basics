@@ -11,11 +11,25 @@
 #include <iterator>
 #include <condition_variable>
 
+std::mutex casMutex;
+long CompareAndSwap(long *var, long newval, long oldval)
+{
+    std::unique_lock<std::mutex> lock(casMutex);
+    long  origVal = *var;
+    if (origVal == oldval) {
+        *var = newval;
+    }
+    return origVal;
+}
 
 class CSpinLock
 {
 public:
-    CSpinLock(INT iMaxSpin) : m_iMaxSpinValue(iMaxSpin), m_bSem(FALSE) {};
+    CSpinLock(INT iMaxSpin) : 
+        m_iMaxSpinValue(iMaxSpin), 
+        m_bAvailable(TRUE),
+        m_bAvailable2(TRUE)
+    {};
 
     ~CSpinLock()
     { 
@@ -25,7 +39,8 @@ public:
     void Lock()
     {
         //while (InterlockedCompareExchange((LONG*)&m_Status, Busy, Available) != Available);
-        while (InterlockedCompareExchange((LONG *)&m_bSem, TRUE, FALSE) != FALSE);
+        //while (InterlockedCompareExchange((LONG *)&m_bAvailable, FALSE, TRUE) != TRUE);
+        while (CompareAndSwap((LONG *)&m_bAvailable, FALSE, TRUE) != TRUE);
 
         return;
     }
@@ -34,7 +49,8 @@ public:
     {
         INT counter = 0 ;
         //while (InterlockedCompareExchange((LONG*)&m_Status, Busy, Available) != Available);
-        while (counter++ < m_iMaxSpinValue && InterlockedCompareExchange((LONG *)&m_bSem, TRUE, FALSE) != FALSE);
+        //while (counter++ < m_iMaxSpinValue && InterlockedCompareExchange((LONG *)&m_bAvailable, FALSE, TRUE) != TRUE);
+        while (counter++ < m_iMaxSpinValue && CompareAndSwap((LONG *)&m_bAvailable, FALSE, TRUE) != TRUE);
         
         if (counter >= m_iMaxSpinValue)
         {
@@ -46,12 +62,14 @@ public:
 
     void Unlock()
     {
-        m_bSem = FALSE;
+        m_bAvailable = TRUE;
+        m_bAvailable2 = TRUE;
     }
 
 private:
     INT m_iMaxSpinValue;
-    BOOL m_bSem;
+    BOOL m_bAvailable;
+    BOOL m_bAvailable2;
 }; 
 
 CSpinLock g_sl(1000);
@@ -100,8 +118,8 @@ void SpinLockRun()
     int i = 0;
     for (; i < numThread; i++)
     {
-        //thVector.emplace_back(SpinLockTest, i);
-        thVector.emplace_back(SpinTryLockTest, i);
+        thVector.emplace_back(SpinLockTest, i);
+        //thVector.emplace_back(SpinTryLockTest, i);
     }
 
     for (auto &t : thVector)

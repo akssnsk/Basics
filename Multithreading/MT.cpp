@@ -53,11 +53,12 @@ public:
 
     long CompareAndSwap(long *var, long newval, long oldval)
     {
-        if (*var == oldval) {
+        std::unique_lock<std::mutex> lock(m);
+        long  origVal = *var;
+        if (origVal == oldval) {
             *var = newval;
-//            return newval;
         }
-        return oldval;
+        return origVal;
     }
 
     void AcquireWithMutex()
@@ -89,7 +90,8 @@ public:
     {
         while (true)
         {
-            while (InterlockedCompareExchange((LONG *)&m_bMutex, TRUE, FALSE) != FALSE);
+            //while (InterlockedCompareExchange((LONG *)&m_bMutex, TRUE, FALSE) != FALSE);
+            while (CompareAndSwap((LONG *)&m_bMutex, TRUE, FALSE) != FALSE);
 
             if (currValue > 0)
                 break;
@@ -97,24 +99,14 @@ public:
             m_bMutex = FALSE;
         }
 
-        // option with CAS
-        //while (true)
-        //{
-        //    while (CompareAndSwap((LONG *)&m_bMutex, TRUE, FALSE) != FALSE);
-
-        //    if (currValue > 0)
-        //        break;
-        //    
-        //    m_bMutex = FALSE;
-        //}
-
         currValue--;
         m_bMutex = FALSE;
     }
 
     void ReleaseSpin()
     {
-        while (InterlockedCompareExchange((LONG *)&m_bMutex, TRUE, FALSE) != FALSE);
+        //while (InterlockedCompareExchange((LONG *)&m_bMutex, TRUE, FALSE) != FALSE);
+        while (CompareAndSwap((LONG *)&m_bMutex, TRUE, FALSE) != FALSE);
 
         if (currValue < maxValue)
             currValue++;
@@ -177,7 +169,7 @@ void Three()
 // Implement and test semaphore 
 void One()
 {
-    Semaphore sharedSemaphore(2);
+    Semaphore sharedSemaphore(1);
 
     int nThreads = 10;
     std::vector<std::thread> thVect;
@@ -186,10 +178,13 @@ void One()
         thVect.emplace_back([](Semaphore &s1, int num)
         {
             std::this_thread::yield();
-            s1.AcquireWithMutex();
+            //s1.AcquireWithMutex();
+            s1.AcquireSpin();
             printf("Thread %2d aquired semaphore\n", num);
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            s1.ReleaseWithMutex();
+            printf("Thread %2d released semaphore\n", num);
+            s1.ReleaseSpin();
+            //s1.ReleaseWithMutex();
         },
         std::ref(sharedSemaphore), i);
     }
@@ -262,11 +257,12 @@ void Two()
 
 int main(int argc, char* argv[])
 {
-    One();
+    //One();
     //Two();
     //Three();
 
-    //SpinLockRun();
+
+    SpinLockRun();
 
     return 0;
 }
