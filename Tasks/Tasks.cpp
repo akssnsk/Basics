@@ -583,7 +583,8 @@ int TreeTraverse(const GraphType &verts, const std::pair<size_t, size_t> &cutEdg
 
         for (auto v : verts[vertex].conn)
         {
-            if ((vertex == cutEdge.first && v == cutEdge.second) ||
+            if (visited[v] ||
+                (vertex == cutEdge.first && v == cutEdge.second) ||
                 (vertex == cutEdge.second && v == cutEdge.first)
                 )
                 continue; // don't go through the edge, which cut
@@ -602,10 +603,10 @@ int CutTheTreeSolver(const GraphType &verts)
     std::vector<int> visited(verts.size());
     int treeDiff = TreeTraverse(verts, std::make_pair(0, 0), 0, visited);
 
-    size_t i = 0;
-    for (auto &n : verts)
+    for (size_t i = 0; i < verts.size(); i++)
     {
-        for (auto v : n.conn)
+
+        for (auto v : verts[i].conn)
         {
             std::vector<int> visited(verts.size());
 
