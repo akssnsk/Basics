@@ -503,20 +503,8 @@ void ClosestNumbers()
     return;
 }
 
-void CutTheTree()
+std::string CutTheTreeDataMock()
 {
-    GraphType edges;
-
-    CutTheTreePreparer(std::cin, &edges);
-
-    int iRes = CutTheTreeSolver(edges);
-    std::cout << iRes << std::endl;
-}
-
-void CutTheTreePrep()
-{
-    GraphType edges;
-
     std::string input =
         "6\n"
         "100 200 100 500 100 600\n"
@@ -526,11 +514,21 @@ void CutTheTreePrep()
         "4 5\n"
         "5 6\n";
 
-    std::istringstream inStr(input);
+    return input;
+}
 
-    CutTheTreePreparer(inStr, &edges);
-    
-    int i = 2 + 2;
+void CutTheTree()
+{
+    GraphType edges;
+
+    std::istringstream inStr(CutTheTreeDataMock());
+
+    std::istream &dataStream = false ? std::cin : inStr;
+
+    CutTheTreePreparer(dataStream, &edges);
+
+    int iRes = CutTheTreeSolver(edges);
+    std::cout << iRes << std::endl;
 }
 
 void CutTheTreePreparer(std::istream &input, GraphType *edges)
@@ -561,51 +559,71 @@ void CutTheTreePreparer(std::istream &input, GraphType *edges)
     }
 }
 
-int TreeTraverse(const GraphType &verts, const std::pair<int, int> &cutEdge, size_t startNode, std::vector<int> &visited)
+int TreeTraverse(const GraphType &verts, const std::pair<size_t, size_t> &cutEdge, size_t startNode, std::vector<size_t> &visited)
 {
     if (verts.size() == 0)
-        return -1;
+        return 0;
 
     if (verts.size() < startNode)
-        return -1;
+        return 0;
 
-    std::stack<int> traverseStack;
+    int treeSum = 0;
+
+    std::stack<size_t> traverseStack;
     traverseStack.push(startNode);
 
+    while (!traverseStack.empty())
+    {
+        size_t vertex = traverseStack.top();
+        traverseStack.pop();
+
+        // count the 
+        visited[vertex] = true;
+        treeSum += verts[vertex].iWeight;
+
+        for (auto v : verts[vertex].conn)
+        {
+            if ((vertex == cutEdge.first && v == cutEdge.second) ||
+                (vertex == cutEdge.second && v == cutEdge.first)
+                )
+                continue; // don't go through the edge, which cut
+
+            traverseStack.push(v);
+        }
+    }
 
 
-    return 0;
+    return treeSum;
 }
 
 int CutTheTreeSolver(const GraphType &verts)
 {
-    int retVal = 0;
+    // Calculate tree sum for the initial tree
+    std::vector<size_t> visited(verts.size());
+    int treeDiff = TreeTraverse(verts, std::make_pair(0, 0), 0, visited);
 
     size_t i = 0;
     for (auto &n : verts)
     {
         for (auto v : n.conn)
         {
-            std::vector<int> marks(verts.size());
-            int F1 = TreeTraverse(verts, std::make_pair(i, v), 0, marks);
+            std::vector<size_t> visited(verts.size());
 
+            // always start from 0th
+            int F1 = TreeTraverse(verts, std::make_pair(i, v), 0, visited);
+
+            // find the first not visited
             size_t idx = 0;
-            while (idx < marks.size() && marks[idx] != 0) { idx++; };
+            while (idx < visited.size() && visited[idx] != 0) { idx++; };
 
-            if (idx != marks.size())
-            {
-                int F2 = TreeTraverse(verts, std::make_pair(i, v), idx, marks);
-                F1 = std::max(F1, F2);
-            }
+            // continue from anyone, which has not been visited
+            int F2 = TreeTraverse(verts, std::make_pair(i, v), idx, visited);
 
-            if (F1 > retVal)
-            {
-                retVal = F1;
-            }
+            treeDiff = std::min(treeDiff, abs(F1-F2));
         }
     }
 
-    return retVal;
+    return treeDiff;
 }
 
 
@@ -641,8 +659,7 @@ int AllTasks()
 
     //ClosestNumbers();
 
-    CutTheTreePrep();
-    //CutTheTree();
+    CutTheTree();
 
     return 0;
 }
