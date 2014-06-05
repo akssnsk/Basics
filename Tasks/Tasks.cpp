@@ -502,6 +502,92 @@ void ClosestNumbers()
     return;
 }
 
+struct Node
+{
+    int iWeight;
+    std::list<int> conn;
+};
+typedef std::vector<Node> NodeType;
+
+void CutTheTreePreparer(std::istream &input, NodeType *edges);
+int CutTheTreeSolver(const NodeType &nodes);
+void CutTheTree();
+
+void CutTheTree()
+{
+    NodeType edges;
+
+    CutTheTreePreparer(std::cin, &edges);
+
+    int iRes = CutTheTreeSolver(edges);
+    std::cout << iRes << std::endl;
+}
+
+void CutTheTreePreparer(std::istream &input, NodeType *edges)
+{
+    size_t intemsCount = 0;
+    input >> intemsCount;
+    input.ignore();
+
+    if (intemsCount < 1)
+        return;
+
+    edges->resize(intemsCount);
+    for (size_t i = 0; i < intemsCount; i++)
+    {
+        int w;
+        input >> w;
+        (*edges)[i].iWeight = w;
+    }
+
+    for (size_t i = 0; i < intemsCount-1; i++)
+    {
+        int from, to;
+        input >> from >> to;
+        input.ignore();
+
+        (*edges)[from].conn.push_back(to);
+        (*edges)[to].conn.push_back(from);
+    }
+}
+
+int TreeTraverse(const NodeType &verts, const std::pair<int, int> &cutEdge, int startNode, std::vector<int> &marks)
+{
+    return 0;
+}
+
+int CutTheTreeSolver(const NodeType &verts)
+{
+    int retVal = 0;
+
+    size_t i = 0;
+    for (auto &n : verts)
+    {
+        for (auto v : n.conn)
+        {
+            std::vector<int> marks(verts.size());
+            int F1 = TreeTraverse(verts, std::make_pair(i, v), 0, marks);
+
+            size_t idx = 0;
+            while (idx < marks.size() && marks[idx] != 0) { idx++; };
+
+            if (idx != marks.size())
+            {
+                int F2 = TreeTraverse(verts, std::make_pair(i, v), idx, marks);
+                F1 = std::max(F1, F2);
+            }
+
+            if (F1 > retVal)
+            {
+                retVal = F1;
+            }
+        }
+    }
+
+    return retVal;
+}
+
+
 int AllTasks()
 {
     //Sherlock();
@@ -533,6 +619,8 @@ int AllTasks()
     //int iRes2 = FindMedian2(vect, minVal, maxVal);
 
     //ClosestNumbers();
+
+    CutTheTree();
 
     return 0;
 }
