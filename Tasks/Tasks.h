@@ -37,5 +37,5 @@ typedef std::vector<GraphNode> GraphType;
 
 void CutTheTreePreparer(std::istream &input, GraphType *edges);
 int CutTheTreeSolver(const GraphType &nodes);
-int TreeTraverse(const GraphType &verts, const std::pair<size_t, size_t> &cutEdge, size_t startNode, std::vector<size_t> &visited);
+int TreeTraverse(const GraphType &verts, const std::pair<size_t, size_t> &cutEdge, size_t startNode, std::vector<int> &visited);
 void CutTheTree();

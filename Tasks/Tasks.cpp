@@ -559,7 +559,7 @@ void CutTheTreePreparer(std::istream &input, GraphType *edges)
     }
 }
 
-int TreeTraverse(const GraphType &verts, const std::pair<size_t, size_t> &cutEdge, size_t startNode, std::vector<size_t> &visited)
+int TreeTraverse(const GraphType &verts, const std::pair<size_t, size_t> &cutEdge, size_t startNode, std::vector<int> &visited)
 {
     if (verts.size() == 0)
         return 0;
@@ -599,7 +599,7 @@ int TreeTraverse(const GraphType &verts, const std::pair<size_t, size_t> &cutEdg
 int CutTheTreeSolver(const GraphType &verts)
 {
     // Calculate tree sum for the initial tree
-    std::vector<size_t> visited(verts.size());
+    std::vector<int> visited(verts.size());
     int treeDiff = TreeTraverse(verts, std::make_pair(0, 0), 0, visited);
 
     size_t i = 0;
@@ -607,7 +607,7 @@ int CutTheTreeSolver(const GraphType &verts)
     {
         for (auto v : n.conn)
         {
-            std::vector<size_t> visited(verts.size());
+            std::vector<int> visited(verts.size());
 
             // always start from 0th
             int F1 = TreeTraverse(verts, std::make_pair(i, v), 0, visited);
