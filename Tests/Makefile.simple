@@ -1,0 +1,19 @@
+CC=g++
+CFLAGS= -c -I. -I../Cpp -I../Tasks -std=c++11 -pthread
+LDFLAGS= -rdynamic -lm -pthread -lpthread -lgtest -lgtest_main -lrt 
+SRC_FILES11= ../Tasks/Tasks.cpp ../Cpp/Cpp.cpp
+SOURCES= tasks_test.cpp cpp_test.cpp $(SRC_FILES11)
+OBJECTS=$(SOURCES:.cpp=.o)
+EXECUTABLE=runTests
+
+all: $(SOURCES) $(EXECUTABLE)
+	
+$(EXECUTABLE): $(OBJECTS) 
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+
+.cpp.o:
+	$(CC) $(CFLAGS) $< -o $@
+
+clean:
+	rm -f *.o 
+	rm -f $(EXECUTABLE)

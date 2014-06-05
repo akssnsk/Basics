@@ -1,7 +1,6 @@
 
 #include "Tasks.h"
 
-#include <strstream>
 #include "gtest/gtest.h"
 
 TEST(Tasks, AnagramPos1) 
@@ -27,7 +26,7 @@ TEST(Tasks, AnagramNeg2)
 
 TEST(Tasks, CutTheTreePrep1)
 {
-    NodeType edges;
+    GraphType edges;
 
     std::string input =
         "6\n"
@@ -38,8 +37,7 @@ TEST(Tasks, CutTheTreePrep1)
         "4 5\n"
         "5 6\n";
 
-    char *inp = (char *)input.c_str();
-    std::strstream inStr(inp, input.size());
+    std::istringstream inStr(input);
     CutTheTreePreparer(inStr, &edges);
 
     EXPECT_EQ(edges.size(), 6);
