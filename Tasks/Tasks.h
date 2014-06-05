@@ -25,3 +25,14 @@ void Rotate(std::vector<int> &arr, size_t shift);
 
 bool IsAnagram(const std::string &str1, const std::string &str2);
 
+struct Node
+{
+    int iWeight;
+    std::list<int> conn;
+};
+typedef std::vector<Node> NodeType;
+
+void CutTheTreePreparer(std::istream &input, NodeType *edges);
+int CutTheTreeSolver(const NodeType &nodes);
+void CutTheTree();
+

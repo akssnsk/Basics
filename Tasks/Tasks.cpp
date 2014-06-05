@@ -502,17 +502,6 @@ void ClosestNumbers()
     return;
 }
 
-struct Node
-{
-    int iWeight;
-    std::list<int> conn;
-};
-typedef std::vector<Node> NodeType;
-
-void CutTheTreePreparer(std::istream &input, NodeType *edges);
-int CutTheTreeSolver(const NodeType &nodes);
-void CutTheTree();
-
 void CutTheTree()
 {
     NodeType edges;

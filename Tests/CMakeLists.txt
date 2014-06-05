@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.6)
 
-SET(CMAKE_CXX_FLAGS "-std=gnu++11") #Turn on C++11 Support
+SET(CMAKE_CXX_FLAGS "-std=gnu++11 -g -ggdb")
 
 set(TASKS_TO_TEST Tasks.cpp)
 set(CPP_TO_TEST Cpp.cpp)
