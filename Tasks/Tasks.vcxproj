@@ -73,9 +73,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CutTheTree.h" />
     <ClInclude Include="Tasks.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CutTheTree.cpp" />
     <ClCompile Include="Tasks.cpp" />
     <ClCompile Include="TaskStarter.cpp" />
   </ItemGroup>

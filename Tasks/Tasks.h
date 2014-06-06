@@ -1,3 +1,4 @@
+#pragma once
 
 #include <stdio.h>
 
@@ -14,6 +15,7 @@
 #include <random>
 #include <deque>
 #include <unordered_map>
+#include <chrono>
 
 #include <string>
 #include <sstream>
@@ -28,14 +30,3 @@ void Rotate(std::vector<int> &arr, size_t shift);
 
 bool IsAnagram(const std::string &str1, const std::string &str2);
 
-struct GraphNode
-{
-    int iWeight;
-    std::list<int> conn;
-};
-typedef std::vector<GraphNode> GraphType;
-
-void CutTheTreePreparer(std::istream &input, GraphType *edges);
-int CutTheTreeSolver(const GraphType &nodes);
-int TreeTraverse(const GraphType &verts, const std::pair<size_t, size_t> &cutEdge, size_t startNode, std::vector<int> &visited);
-void CutTheTree();

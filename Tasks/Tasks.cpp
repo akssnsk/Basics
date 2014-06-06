@@ -3,6 +3,7 @@
 
 #include "Tasks.h"
 
+#include "CutTheTree.h"
 
 //int Knapsack(int W, int wt[], int val[], int n)
 //{
@@ -503,129 +504,7 @@ void ClosestNumbers()
     return;
 }
 
-std::string CutTheTreeDataMock()
-{
-    std::string input =
-        "6\n"
-        "100 200 100 500 100 600\n"
-        "1 2 "
-        "2 3\n"
-        "2 5\n"
-        "4 5\n"
-        "5 6\n";
 
-    return input;
-}
-
-void CutTheTree()
-{
-    GraphType edges;
-
-    std::istringstream inStr(CutTheTreeDataMock());
-
-    std::istream &dataStream = false ? std::cin : inStr;
-
-    CutTheTreePreparer(dataStream, &edges);
-
-    int iRes = CutTheTreeSolver(edges);
-    std::cout << iRes << std::endl;
-}
-
-void CutTheTreePreparer(std::istream &input, GraphType *edges)
-{
-    size_t intemsCount = 0;
-    input >> intemsCount;
-    input.ignore();
-
-    if (intemsCount < 1)
-        return;
-
-    edges->resize(intemsCount);
-    for (size_t i = 0; i < intemsCount; i++)
-    {
-        int w;
-        input >> w;
-        (*edges)[i].iWeight = w;
-    }
-
-    for (size_t i = 0; i < intemsCount-1; i++)
-    {
-        int from, to;
-        input >> from >> to;
-        input.ignore();
-
-        (*edges)[from-1].conn.push_back(to-1);
-        (*edges)[to-1].conn.push_back(from-1);
-    }
-}
-
-int TreeTraverse(const GraphType &verts, const std::pair<size_t, size_t> &cutEdge, size_t startNode, std::vector<int> &visited)
-{
-    if (verts.size() == 0)
-        return 0;
-
-    if (verts.size() < startNode)
-        return 0;
-
-    int treeSum = 0;
-
-    std::stack<size_t> traverseStack;
-    traverseStack.push(startNode);
-
-    while (!traverseStack.empty())
-    {
-        size_t vertex = traverseStack.top();
-        traverseStack.pop();
-
-        // count the 
-        visited[vertex] = true;
-        treeSum += verts[vertex].iWeight;
-
-        for (auto v : verts[vertex].conn)
-        {
-            if (visited[v] ||
-                (vertex == cutEdge.first && v == cutEdge.second) ||
-                (vertex == cutEdge.second && v == cutEdge.first)
-                )
-                continue; // don't go through the edge, which cut
-
-            traverseStack.push(v);
-        }
-    }
-
-
-    return treeSum;
-}
-
-int CutTheTreeSolver(const GraphType &verts)
-{
-    // Calculate tree sum for the initial tree
-    std::vector<int> visited(verts.size());
-    int treeDiff = TreeTraverse(verts, std::make_pair(0, 0), 0, visited);
-
-    for (size_t i = 0; i < verts.size(); i++)
-    {
-
-        for (auto v : verts[i].conn)
-        {
-            std::vector<int> visited(verts.size());
-
-            // always start from 0th
-            int F1 = TreeTraverse(verts, std::make_pair(i, v), 0, visited);
-
-            // find the first not visited
-            size_t idx = 0;
-            while (idx < visited.size() && visited[idx] != 0) { idx++; };
-
-            // continue from anyone, which has not been visited
-            int F2 = TreeTraverse(verts, std::make_pair(i, v), idx, visited);
-
-            treeDiff = std::min(treeDiff, abs(F1-F2));
-        }
-    }
-
-    return treeDiff;
-}
 
 
 int AllTasks()
@@ -638,15 +517,15 @@ int AllTasks()
     //std::string sss = "this is my string with duplicates"; std::string sss = " ";
     //std::string str2 = RemoveDuplicates(sss);
 
-    auto vect = PrepareVector(25);
-    auto res = BinSearch(vect, 0, vect.size());
+    //auto vect = PrepareVector(25);
+    //auto res = BinSearch(vect, 0, vect.size());
 
     //KnapsackProblem();
 
     //int d = AnagramDifference("dnqaurlplofnrtmh");
     //AnagramDifferenceStarter();
     //bool bRet = IsAnagram("qwert  asdfg1", "asdfgqwert");
-    bool bRet = IsAnagram("str1", "str2");
+    //bool bRet = IsAnagram("str1", "str2");
 
     //std::vector<int> vect = { 1, 1, 1, 1, 1, 14, 15, 44, 97 };
     //std::vector<int> vect = { 1, 1, 1, 1, 1, 14, 15, 44, 97, 97 };
