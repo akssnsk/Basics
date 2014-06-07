@@ -68,13 +68,9 @@ void ReveiveData()
 
     size_t recBytes1 = recv(&buf1[0], buf1.size());
     
-    _ASSERT(recBytes1 == 300);
-
     std::vector<char> buf2(1 << 16);
 
     size_t recBytes2 = recv(&buf2[0], buf2.size());
-
-    _ASSERT(recBytes2 > 0 && recBytes2 < buf2.size());
 
 }
 

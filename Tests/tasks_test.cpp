@@ -1,5 +1,6 @@
 
 #include "Tasks.h"
+#include "CutTheTree.h"
 
 #include "gtest/gtest.h"
 
