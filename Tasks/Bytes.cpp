@@ -46,7 +46,7 @@ size_t recv(char* buf, size_t size)
     *pBuf     = get_byte();
 
     short packetLen = *(short*)buf;
-    if (size < packetLen)
+    if (size < (size_t)packetLen)
         return 0; // buf is too small
 
     pBuf += 2; // skip the size
