@@ -73,10 +73,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Bytes.h" />
     <ClInclude Include="CutTheTree.h" />
     <ClInclude Include="Tasks.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bytes.cpp" />
     <ClCompile Include="CutTheTree.cpp" />
     <ClCompile Include="Tasks.cpp" />
     <ClCompile Include="TaskStarter.cpp" />

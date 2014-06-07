@@ -4,6 +4,7 @@
 #include "Tasks.h"
 
 #include "CutTheTree.h"
+#include "Bytes.h"
 
 //int Knapsack(int W, int wt[], int val[], int n)
 //{
@@ -539,7 +540,9 @@ int AllTasks()
 
     //ClosestNumbers();
 
-    CutTheTree();
+    //CutTheTree();
+    
+    ByteTasks();
 
     return 0;
 }
