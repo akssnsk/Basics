@@ -2,6 +2,11 @@
 //
 
 #include "Cpp.h"
+#include "Complex.h"
+#include "NumberPlay.h"
+
+#include <vector>
+#include <iostream>
 
 static int aDefCtr = 0;
 static int aCopyCtr = 0;
@@ -78,17 +83,20 @@ void hello() {
     std::cout << "Hello!\n"; 
 }
 
-bool IsPrime(int n)
+int IsPrime(int n)
 {
-    if (n < 2)
+    if (n == 2)
+        return true;
+
+    if (n < 2 || n%2 == 0)
         return false;
 
-    bool retVal = true;
-    for (int i = 2; i < n/2; ++i)
+    int retVal = 1;
+    for (int i = 3; i < n/i ; i += 2)
     {
         if (n%i == 0)
         {
-            retVal = false;
+            retVal = 0;
             break;
         }
     }
@@ -237,13 +245,11 @@ void FuncPtr()
 
 void CppProblemsRun()
 {
-    int iVar = 1;
-    iVar = iVar++;
-    int iLen = 3;
-    iVar = iVar++ % iLen, 4 , 6;
+    CppComplexRun();
 
-    bool bb = IsPrime(10);
+    NumberPlay();
 
+    int bb = IsPrime(13);
 
     FuncPtr();
 
@@ -265,18 +271,22 @@ void CppProblemsRun()
         vS.push_back(s);
     }
 
+    printf("Start over -------- \n");
+
     aDefCtr = 0;
     aCopyCtr = 0;
     aAssignCtr = 0;
 
     // Vector insertion
-    std::vector<A> vectQWER(10);
+    std::vector<A> vectQWER(10);  // 10 def ctors
     printf("\n");
-    vectQWER.erase(vectQWER.begin(), vectQWER.begin() + 2);
+    vectQWER.insert(vectQWER.end() - 2, A()); // 1 def ctor + 10 copy ctors (realloc) + some copy ctors and assign ops
     printf("\n");
-    vectQWER.erase(vectQWER.end()-2, vectQWER.end());
+    vectQWER.erase(vectQWER.begin(), vectQWER.begin() + 2); // 9 assign ops, to move upfront
     printf("\n");
-    vectQWER.insert(vectQWER.end() - 4, A());
+    vectQWER.erase(vectQWER.end()-2, vectQWER.end()); // just dtors
+    printf("\n");
+    vectQWER.insert(vectQWER.end() - 4, A()); // 1 def ctor + some copy ctors and assign ops to rearrange the vector
     printf("\n");
 
     std::vector<int> vectQWER22;
@@ -417,10 +427,10 @@ void CppProblemsRun()
     std::vector<bool> primeRes = Eratosphenes(10000);
 
     // Threads
-    timer(std::chrono::seconds(1), hello);
+    timer(std::chrono::milliseconds(200), hello);
     std::cout << "Thread launched\n";
     
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
     std::cout << "Continue\n";
 
     //Point pp;
@@ -504,6 +514,39 @@ void CppProblemsRun()
         printf("(%d, %S) ", i->first, i->second.c_str());
     }
 
+    //std::bitset
+
     printf("\n");
 }
 
+void CppComplexRun()
+{
+    std::complex<int> c11;
+    std::complex<int> c12(2,3);
+
+    c11 + c12;
+    std::complex<int>  c13;
+    c13 = 3 + c12;
+
+    Complex c1;
+    Complex c2(2, 3);
+    Complex c3(3, 4);
+    Complex c4(4, 5);
+    
+    Complex cTmp1(c4);
+    Complex cTmp2 = c4;
+    cTmp1 = c2;
+
+    std::cout << c1 ;
+
+    std::vector<Complex> vectComplex(2);
+    std::vector<const Complex> vectConstComplex(2);
+    vectConstComplex.push_back(c1);
+    vectConstComplex.push_back(c2);
+
+    c2 + c3;
+    cTmp1 = c2 + c3;
+    cTmp2 = c2 + c3 + c4;
+
+    return;
+}
