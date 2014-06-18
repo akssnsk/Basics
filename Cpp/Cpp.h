@@ -9,9 +9,12 @@
 #include <chrono>
 #include <thread>
 #include <cmath>
+#include <complex>
 
-bool IsPrime(int n);
+int IsPrime(int n);
 int NumBit(int num);
 std::vector<bool> Eratosphenes(int limit);
 
 void CppProblemsRun();
+
+void CppComplexRun();

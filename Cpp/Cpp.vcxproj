@@ -137,11 +137,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Complex.h" />
     <ClInclude Include="Cpp.h" />
+    <ClInclude Include="NumberPlay.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Complex.cpp" />
     <ClCompile Include="Cpp.cpp" />
     <ClCompile Include="CppStarter.cpp" />
+    <ClCompile Include="NumberPlay.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
