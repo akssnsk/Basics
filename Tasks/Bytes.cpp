@@ -74,7 +74,74 @@ void ReveiveData()
 
 }
 
+std::pair<unsigned short, unsigned short> MaxXorPreparer(std::istream &input)
+{
+    size_t intL, intR;
+    input >> intL;
+    input.ignore();
+
+    input >> intR;
+    input.ignore();
+
+    return std::make_pair(intL, intR);
+}
+
+//R : 6, 0x110 | 5, 0x101 | 61, 0x111101
+//L : 5, 0x101 | 1, 0x001 | 5,  0x000101
+//S : 3, 0x011 | 7, 0x111 | --, 0x111111
+
+unsigned short MaxXorSolver(unsigned short L, unsigned short R)
+{
+#if 1
+    short res2 = L ^ R;
+
+    int a = L, b = R;
+    for (short i = L; i <= R; i++)
+    {
+        for (short j = L; j <= R; j++)
+        {
+            short tmpMax = (i ^ j);
+            if (res2 < tmpMax)
+            {
+                a = i; b = j;
+                res2 = tmpMax;
+            }
+        }
+    }
+#endif
+
+    unsigned short res = L^R;
+
+    int msb = 0;
+    while (res != 0)
+    {
+        res >>= 1;
+        msb++;
+    }
+
+    res = 1 << msb;
+    res--;
+
+    return res;
+}
+void MaxXor()
+{
+    std::string strData = "5\n61\n";
+    std::istringstream inStr(strData);
+
+    //std::istream &dataStream = std::cin;
+    std::istream &dataStream = inStr;
+
+    auto lr = MaxXorPreparer(dataStream);
+    int iRes = MaxXorSolver(lr.first, lr.second);
+
+    std::cout << iRes << std::endl;
+}
+
+
 void ByteTasks()
 {
-    ReveiveData();
+    MaxXor();
+
+    //ReveiveData();
 }

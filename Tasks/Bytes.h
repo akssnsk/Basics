@@ -11,11 +11,14 @@
 //size is the size of the buffer
 //The function returns the full lenght of the pack, including the header .
 //If error occured, 0 returned.
-
-
 char get_byte();
 size_t recv(char* buf, size_t size);
 void ReveiveData();
+
+
+std::pair<unsigned short, unsigned short> MaxXorPreparer(std::istream &input);
+unsigned short MaxXorSolver(unsigned short L, unsigned short R);
+void MaxXor();
 
 
 void ByteTasks();

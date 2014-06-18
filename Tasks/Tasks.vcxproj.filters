@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Bytes.cpp">
+      <Filter>Tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="CutTheTree.cpp">
+      <Filter>Tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="Tasks.cpp">
+      <Filter>Tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskStarter.cpp">
+      <Filter>Tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Scheduler</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Bytes.h">
+      <Filter>Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="CutTheTree.h">
+      <Filter>Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="Tasks.h">
+      <Filter>Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Scheduler</Filter>
+    </ClInclude>
+    <ClInclude Include="stlheaders.h">
+      <Filter>Scheduler</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Tasks">
+      <UniqueIdentifier>{42195231-9af0-4778-aecf-2a812afe90bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scheduler">
+      <UniqueIdentifier>{a48640d3-d8dc-469d-b21d-9953eca0ef9b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

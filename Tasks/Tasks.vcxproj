@@ -75,13 +75,16 @@
   <ItemGroup>
     <ClInclude Include="Bytes.h" />
     <ClInclude Include="CutTheTree.h" />
+    <ClInclude Include="stlheaders.h" />
     <ClInclude Include="Tasks.h" />
+    <ClInclude Include="Node.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bytes.cpp" />
     <ClCompile Include="CutTheTree.cpp" />
     <ClCompile Include="Tasks.cpp" />
     <ClCompile Include="TaskStarter.cpp" />
+    <ClCompile Include="Node.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -6,6 +6,8 @@
 #include "CutTheTree.h"
 #include "Bytes.h"
 
+#include "Node.h"
+
 //int Knapsack(int W, int wt[], int val[], int n)
 //{
 //    if (n == 0)
@@ -33,7 +35,7 @@ int Partition(std::vector<int> &ar, size_t l, size_t r)
         while (ar[i] < pivotValue && i < r) i++;
         while (ar[j] > pivotValue && j > 0) j--;
 
-        if (i <= j)
+        if (i <= j) // less or equal required to update indexes
         {
             std::swap(ar[i], ar[j]);
             if (i<r) i++; 
@@ -46,7 +48,7 @@ int Partition(std::vector<int> &ar, size_t l, size_t r)
 
 void QuickSortHelper(std::vector<int> &ar, size_t l, size_t r)
 {
-    if (ar.size() < 1)
+    if (ar.size() < 2)
         return;
 
     if (l == r)
@@ -346,13 +348,13 @@ bool IsAnagram(const std::string &str1, const std::string &str2)
     HashType hash2; // d-1...
 
     // Count chars
-    for (auto c1 : str1) // -> iterating along the stream
+    for (auto c1 : str1) 
     {
         if (c1 != ' ') // -> add more chars to ignore
             hash1[c1]++;
     }
 
-    for (auto c2 : str2) // -> stream too
+    for (auto c2 : str2) 
     {
         if (c2 != ' ')
             hash2[c2]++;
@@ -506,10 +508,18 @@ void ClosestNumbers()
 }
 
 
+int fibonacchi(int n)
+{
+    return (n < 3) ?
+        1 :
+        fibonacchi(n - 1) + fibonacchi(n - 2);
+}
 
 
 int AllTasks()
 {
+    MaxXor();
+    return 0;
     //Sherlock();
 
     //ChangeEndian();
@@ -542,7 +552,84 @@ int AllTasks()
 
     //CutTheTree();
     
-    ByteTasks();
+    //ByteTasks();
+
+
+
+
+#if 0
+
+    bool calcReady = false;
+    std::mutex textMutex;
+    std::condition_variable cv;
+
+    std::shared_ptr<Work> w =
+        std::make_shared<Work>(0, 3, fibonacchi,
+        [&](size_t uid, int res)
+    {
+        int  ii = 5+res;
+        calcReady = true;
+        cv.notify_one();
+    });
+
+    std::unique_lock<std::mutex> lock(textMutex);
+    while (!calcReady) cv.wait(lock);
+    lock.release();
+
+    calcReady = false;
+
+    int calls = 0;
+    Node::NodeCallbackT func = Node::NodeCallbackT([&](int res) 
+    {
+        calls++;
+        calcReady = (calls == 3);
+        cv.notify_one();
+    });
+
+    Node nn(1, 3, func);
+
+    nn.DoWorkOnUnit(fibonacchi, 10);
+    nn.DoWorkOnUnit(fibonacchi, 5);
+    nn.DoWorkOnUnit(fibonacchi, 7);
+
+    std::mutex mut2;
+    std::unique_lock<std::mutex> lock2(mut2);
+    while (!calcReady) cv.wait(lock2);
+
+
+    for (int i = 0; i < 10 * 1000; i++)
+    {
+        std::this_thread::sleep_for(std::chrono::microseconds(100));
+    }
+#endif
+
+#if 1
+    bool calcReady = false;
+    std::condition_variable cv;
+
+    int calls = 0;
+    Node::NodeCallbackT func = Node::NodeCallbackT([&](int res)
+    {
+        calls++;
+        printf("Call: %d\n", calls);
+
+        calcReady = (calls == 3);
+        cv.notify_one();
+    });
+
+    int nodeId = 1;
+    size_t unitNum = 5;
+    Node nn(nodeId, unitNum, func);
+
+    nn.DoWorkOnUnit(fibonacchi, 10);
+    nn.DoWorkOnUnit(fibonacchi, 5);
+    nn.DoWorkOnUnit(fibonacchi, 7);
+
+    std::mutex mut2;
+    std::unique_lock<std::mutex> lock2(mut2);
+    while (!calcReady) cv.wait(lock2);
+
+#endif 
 
     return 0;
 }
