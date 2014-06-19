@@ -15,6 +15,9 @@
 using namespace std;
 
 
+#include "List.h"
+#include "Tree.h"
+
 class MyClass {
     virtual void a() = 0;
 };
@@ -44,200 +47,6 @@ void f(const std::vector<MyClass> & v)
     cout << "vector" << endl;
 }
 
-
-
-template <typename T>
-struct TreeNode
-{
-    T data;
-    TreeNode *pLeft;
-    TreeNode *pRight;
-
-    TreeNode(const T &param)
-    {
-        data = param;
-        pLeft = nullptr;
-        pRight = nullptr;
-    }
-
-};
-
-template<typename T>
-void Insert(TreeNode<T> *root, TreeNode<T> *node)
-{
-    if (root == nullptr)
-    {
-        // Empty tree
-        return;
-    }
-
-    TreeNode<T> *nextNode = (node->data > root->data) ? 
-                                root->pRight : 
-                                root->pLeft;
-    if (nextNode != nullptr)
-    {
-        return Insert(nextNode, node);
-    }
-
-    if (node->data > root->data)
-    {
-        root->pRight = node;
-    }
-    else
-    {
-        root->pLeft = node;
-    }
-
-    return;
-}
-
-template<typename T>
-void PrintValue(const TreeNode<T> *root)
-{
-    printf("0x%x", root->data);
-}
-
-template<>
-void PrintValue(const TreeNode<int> *root)
-{
-    printf("%2d ", root->data);
-}
-
-
-template<typename T>
-void PreTraverse(const TreeNode<T> *node, std::function<void(const TreeNode<T> *)> Func)
-{
-    if (node == nullptr)
-        return;
-
-    Func(node);
-    
-    PreTraverse(node->pLeft, Func);
-
-    PreTraverse(node->pRight, Func);
-}
-
-template<typename T>
-void TraverseLeftSidePreOrder(const TreeNode<T> *node, const std::function<void(const TreeNode<T> *)> &Func)
-{
-    if (node == nullptr)
-        return;
-
-    if (node->pLeft != nullptr || node->pRight != nullptr)
-    {
-        Func(node);
-    }
-
-    TraverseLeftSidePreOrder(node->pLeft, Func);
-}
-
-template<typename T>
-void TraverseRightSidePostOrder(const TreeNode<T> *node, std::function<void(const TreeNode<T> *)> Func)
-{
-    if (node == nullptr)
-        return;
-
-    TraverseRightSidePostOrder(node->pRight, Func);
-
-    if (node->pLeft != nullptr || node->pRight != nullptr)
-    {
-        Func(node);
-    }
-}
-
-template<typename T>
-void TraverseLeavesLeftToRight(const TreeNode<T> *node, std::function<void(const TreeNode<T> *)> Func)
-{
-    if (node == nullptr)
-        return;
-
-    if (node->pLeft == nullptr && node->pRight == nullptr)
-    {
-        Func(node);
-    }
-
-    TraverseLeavesLeftToRight(node->pLeft, Func);
-
-    TraverseLeavesLeftToRight(node->pRight, Func);
-}
-
-template<typename T>
-void TraverseAround(const TreeNode<T> *node, std::function<void(const TreeNode<T> *)> Func)
-{
-    TraverseLeftSidePreOrder(node, Func);
-
-    TraverseLeavesLeftToRight(node, Func);
-
-    TraverseRightSidePostOrder(node, Func);
-}
-
-template<typename T, typename U>
-void TraverseDFS(const TreeNode<T> *node, const std::function<void(const TreeNode<U> *)> &Func)
-{
-    return;
-}
-
-template<typename T, typename U>
-void TraverseBFS(const TreeNode<T> *node, const std::function<void(const TreeNode<U> *)> &Func)
-{
-    return;
-}
-
-template<typename U>
-void TraverseDFS(const TreeNode<int> *node, const std::function<void(const TreeNode<U> *)> &Func)
-{
-    if (node == nullptr)
-        return;
-
-    std::stack<const TreeNode<int> *> stack;
-    stack.push(node);
-
-    while (!stack.empty())
-    {
-        const TreeNode<int> *nodeCurr = stack.top();
-        stack.pop();
-
-        Func(nodeCurr);
-
-        if (nodeCurr->pRight != nullptr)
-        {
-            stack.push(nodeCurr->pRight);
-        }
-
-        if (nodeCurr->pLeft != nullptr)
-        {
-            stack.push(nodeCurr->pLeft);
-        }
-    }
-}
-
-template<typename U>
-void TraverseBFS(const TreeNode<int> *node, const std::function<void(const TreeNode<U> *)> &Func)
-{
-    if (node == nullptr)
-        return;
-
-    std::queue<const TreeNode<int> *> queue;
-    queue.push(node);
-
-    while (!queue.empty())
-    {
-        const TreeNode<int> *nodeCurr = queue.front();
-        queue.pop();
-
-        Func(nodeCurr);
-        
-        if (nodeCurr->pLeft != nullptr)
-        {
-            queue.push(nodeCurr->pLeft);
-        }
-
-        if (nodeCurr->pRight != nullptr)
-        {
-            queue.push(nodeCurr->pRight);
-        }
-    }
-}
 
 // Test if sorted array and BST have all the same values
 template<typename T>
@@ -281,68 +90,8 @@ bool areSame(const std::vector<int> &array, const TreeNode<T> *root)
 }
 
 
-template <typename T>
-struct ListNode
-{
-    T data;
-    ListNode *pNext;
-
-    ListNode(const T &param)
-    {
-        data = param;
-        pNext = nullptr;
-    }
-};
-
 typedef TreeNode<int> TreeNodeInt;
 typedef ListNode<int> ListNodeInt;
-
-ListNodeInt *Reverse(ListNodeInt *top)
-{
-    if (top == nullptr)
-        return top; // Empty list
-
-    if (top->pNext == nullptr)
-        return top; // One element list
-        
-    // Init
-    ListNodeInt *p1 = top;
-    ListNodeInt *p2 = top->pNext;
-    p1->pNext = nullptr;
-    
-    // Run reversing
-    while (p2 != nullptr)
-    {
-        ListNodeInt *t = p2->pNext;
-
-        p2->pNext = p1;
-
-        p1 = p2;
-        p2 = t;
-    }
-
-    top = p1;
-    return top;
-}
-
-ListNodeInt *ReverseRecursively(ListNodeInt *currNode)
-{
-    if (currNode == nullptr)
-        return currNode; // Empty list
-
-    if (currNode->pNext == nullptr)
-        return currNode; // One element list
-
-    ListNodeInt *rest = currNode->pNext;
-    currNode->pNext = nullptr;
-
-    ListNodeInt *newTop = ReverseRecursively(rest);
-
-    rest->pNext = currNode;
-
-    return newTop;
-}
-
 
 std::string RotateWords(const std::string &strInput)
 {
@@ -451,7 +200,6 @@ void PrintParenthesis(int n)
     return PrintParenthesisHelper(n, 0, s);
 }
 
-
 int main(int argc, char* argv[])
 {
     f(2);
@@ -519,8 +267,8 @@ int main(int argc, char* argv[])
     printf("\n");
 
     top = Reverse(top);
+
     t = top;
- 
     while (t != nullptr)
     {
         printf("%d ", t->data);
@@ -530,8 +278,8 @@ int main(int argc, char* argv[])
     printf("\n");
 
     top = ReverseRecursively(top);
-    t = top;
 
+    t = top;
     while (t != nullptr)
     {
         printf("%d ", t->data);
@@ -541,10 +289,9 @@ int main(int argc, char* argv[])
     printf("\n");
     printf("\n");
 
-    TreeNodeInt *root = nullptr;
-
     printVector = {50, 25, 75, 12, 37, 63, 87, 6, 18, 31, 42, 58, 69, 81, 93};
 
+    TreeNodeInt *root = nullptr;
     for (int num : printVector)
     {
         TreeNodeInt *node = new TreeNodeInt(num);
