@@ -66,3 +66,5 @@ ListNode<T> *ReverseRecursively(ListNode<T>  *currNode)
 
     return newTop;
 }
+
+void ListsAlgorithmRun();

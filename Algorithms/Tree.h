@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 #include <functional>
+#include <stack>
+#include <queue>
 
 template <typename T>
 struct TreeNode
@@ -18,6 +20,8 @@ struct TreeNode
     }
 
 };
+
+typedef TreeNode<int> TreeNodeInt;
 
 template<typename T>
 void Insert(TreeNode<T> *root, TreeNode<T> *node)
@@ -188,3 +192,5 @@ void TraverseBFS(const TreeNode<int> *node, const std::function<void(const TreeN
         }
     }
 }
+
+void TreeAlgorithmRun();

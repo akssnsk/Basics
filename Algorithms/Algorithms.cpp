@@ -18,34 +18,6 @@ using namespace std;
 #include "List.h"
 #include "Tree.h"
 
-class MyClass {
-    virtual void a() = 0;
-};
-
-class MyClass2 : public MyClass {
-    void a(){}
-};
-
-// template definition
-template< class T >
-void f(const T& value)
-{
-    cout << "DEFAULT" << endl;
-};
-
-// specialization for MyClass
-template<>
-void f(const MyClass & value)
-{
-    cout << "MyClass" << endl;
-};
-
-// specialization for vector of MyClass
-template<>
-void f(const std::vector<MyClass> & v)
-{
-    cout << "vector" << endl;
-}
 
 
 // Test if sorted array and BST have all the same values
@@ -89,9 +61,6 @@ bool areSame(const std::vector<int> &array, const TreeNode<T> *root)
     return areSameHelper(array, root, cc);
 }
 
-
-typedef TreeNode<int> TreeNodeInt;
-typedef ListNode<int> ListNodeInt;
 
 std::string RotateWords(const std::string &strInput)
 {
@@ -200,17 +169,9 @@ void PrintParenthesis(int n)
     return PrintParenthesisHelper(n, 0, s);
 }
 
+
 int main(int argc, char* argv[])
 {
-    f(2);
-
-    MyClass2 e;
-    f<MyClass>(e);
-
-    vector<MyClass> vM;
-    f(vM);
-
-
     std::string s1("12345 67890 my string");
     int iS1 = s1.size();
 
@@ -238,58 +199,14 @@ int main(int argc, char* argv[])
     auto idxs = TheLongestIncSeq(printVector);
 
 
-    ListNodeInt *top = nullptr;
-
-    for (int num : printVector)
-    {
-        ListNodeInt *n = new ListNodeInt(num);
-
-        if (top == nullptr)
-        {
-            top = n;
-            continue;
-        }
-        else
-        {
-            n->pNext = top;
-            top = n;
-        }
-    }
-
-    ListNodeInt *t = top;
-
-    while (t != nullptr)
-    {
-        printf("%d ", t->data);
-        t = t->pNext;
-    }
-
-    printf("\n");
-
-    top = Reverse(top);
-
-    t = top;
-    while (t != nullptr)
-    {
-        printf("%d ", t->data);
-        t = t->pNext;
-    }
-
-    printf("\n");
-
-    top = ReverseRecursively(top);
-
-    t = top;
-    while (t != nullptr)
-    {
-        printf("%d ", t->data);
-        t = t->pNext;
-    }
+    ListsAlgorithmRun();
 
     printf("\n");
     printf("\n");
 
-    printVector = {50, 25, 75, 12, 37, 63, 87, 6, 18, 31, 42, 58, 69, 81, 93};
+    TreeAlgorithmRun();
+
+    printVector = { 50, 25, 75, 12, 37, 63, 87, 6, 18, 31, 42, 58, 69, 81, 93 };
 
     TreeNodeInt *root = nullptr;
     for (int num : printVector)
@@ -306,24 +223,6 @@ int main(int argc, char* argv[])
 
     std::sort(printVector.begin(), printVector.end());
     bool bRes = areSame(printVector, root);
-
-    std::function<void(const TreeNodeInt *node)> func = [](const TreeNodeInt *node){PrintValue(node); };
-
-    printf("TraverseAround: ");
-    TraverseAround(root, func);
-    printf("\n");
-
-    printf("PreTraverse: ");
-    PreTraverse(root, func);
-    printf("\n");
-
-    printf("TraverseDFS: ");
-    TraverseDFS(root, func);
-    printf("\n");
-
-    printf("TraverseBFS: ");
-    TraverseBFS(root, func);
-    printf("\n");
 
     PrintParenthesis(3);
 
