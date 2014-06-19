@@ -5,8 +5,7 @@
 #include "Complex.h"
 #include "NumberPlay.h"
 
-#include <vector>
-#include <iostream>
+#include "Template.h"
 
 static int aDefCtr = 0;
 static int aCopyCtr = 0;
@@ -243,9 +242,41 @@ void FuncPtr()
     return;
 }
 
+void ContainerRun()
+{
+    std::vector<int> intVector;
+
+    int val = 1;
+    std::generate_n(std::back_inserter(intVector), 10, [&](){return val++; });
+
+    int vMax1 = *std::max_element(intVector.begin(), intVector.end()); // Returns value of max element in vector 
+    int idxMin1 = std::min_element(intVector.begin(), intVector.end()) - intVector.begin(); // Returns index of min element in vector 
+
+
+    int sum = std::accumulate(intVector.begin(), intVector.end(), 1, std::multiplies<int>());
+    
+    return;
+}
+
+void SharedPrtRun()
+{
+    std::shared_ptr<int> sp1(new int(5));
+
+    std::shared_ptr<int> sp2(sp1);
+
+    sp1.reset();
+    sp2.reset();
+}
+
 void CppProblemsRun()
 {
+    ContainerRun();
+
+    SharedPrtRun();
+
     CppComplexRun();
+
+    TemplateRun();
 
     NumberPlay();
 
@@ -288,6 +319,10 @@ void CppProblemsRun()
     printf("\n");
     vectQWER.insert(vectQWER.end() - 4, A()); // 1 def ctor + some copy ctors and assign ops to rearrange the vector
     printf("\n");
+
+    size_t sizeVect1 = vectQWER.end() - vectQWER.begin();
+    size_t sizeVect2 = vectQWER.size();
+
 
     std::vector<int> vectQWER22;
 
@@ -332,6 +367,12 @@ void CppProblemsRun()
     res = ssh2.insert({ "string2", 2 });
     res = ssh2.insert({ "zzstr11", 3 });
     res = ssh2.insert({ "string2", 2 });
+
+    size_t sizeSsh2 = ssh2.size();
+
+    // No minus operator
+    //size_t sizeSsh1 = ssh2.end() - ssh2.begin();
+    //int idxSsh1 = (std::find(ssh2.begin(), ssh2.end(), "zzstr11") - ssh2.begin());
 
 
     A cA1;

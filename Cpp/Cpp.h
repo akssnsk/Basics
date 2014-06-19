@@ -1,9 +1,14 @@
 #include <stdio.h>
 
+#include <vector>
+#include <iostream>
+#include <memory>
 #include <iostream>
 #include <string>
 #include <map>
 #include <unordered_map>
+
+#include <numeric>
 #include <algorithm>
 #include <functional>
 #include <chrono>

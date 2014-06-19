@@ -19,7 +19,6 @@ using namespace std;
 #include "Tree.h"
 
 
-
 // Test if sorted array and BST have all the same values
 template<typename T>
 bool areSameHelper(const std::vector<int> &array, const TreeNode<T> *node, int &ctr)
