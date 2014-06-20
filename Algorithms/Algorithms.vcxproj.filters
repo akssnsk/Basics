@@ -7,9 +7,11 @@
     <ClCompile Include="Algorithms.cpp" />
     <ClCompile Include="Tree.cpp" />
     <ClCompile Include="List.cpp" />
+    <ClCompile Include="Graph.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tree.h" />
     <ClInclude Include="List.h" />
+    <ClInclude Include="Graph.h" />
   </ItemGroup>
 </Project>
