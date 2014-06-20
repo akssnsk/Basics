@@ -76,12 +76,14 @@
     <ClInclude Include="Bytes.h" />
     <ClInclude Include="CutTheTree.h" />
     <ClInclude Include="stlheaders.h" />
+    <ClInclude Include="StringTasks.h" />
     <ClInclude Include="Tasks.h" />
     <ClInclude Include="Node.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bytes.cpp" />
     <ClCompile Include="CutTheTree.cpp" />
+    <ClCompile Include="StringTasks.cpp" />
     <ClCompile Include="Tasks.cpp" />
     <ClCompile Include="TaskStarter.cpp" />
     <ClCompile Include="Node.cpp" />

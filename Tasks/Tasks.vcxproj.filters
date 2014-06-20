@@ -16,6 +16,9 @@
     <ClCompile Include="Node.cpp">
       <Filter>Scheduler</Filter>
     </ClCompile>
+    <ClCompile Include="StringTasks.cpp">
+      <Filter>Tasks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bytes.h">
@@ -32,6 +35,9 @@
     </ClInclude>
     <ClInclude Include="stlheaders.h">
       <Filter>Scheduler</Filter>
+    </ClInclude>
+    <ClInclude Include="StringTasks.h">
+      <Filter>Tasks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,7 @@
 //
 
 #include "Tasks.h"
+#include "StringTasks.h"
 
 #include "CutTheTree.h"
 #include "Bytes.h"
@@ -518,6 +519,8 @@ int fibonacchi(int n)
 
 int AllTasks()
 {
+    StringTaskRun();
+
     MaxXor();
     return 0;
     //Sherlock();
