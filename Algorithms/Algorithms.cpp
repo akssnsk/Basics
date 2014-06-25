@@ -171,6 +171,13 @@ void PrintParenthesis(int n)
 
 int main(int argc, char* argv[])
 {
+    int tmpDbgFlag = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG);
+    tmpDbgFlag |= _CRTDBG_DELAY_FREE_MEM_DF;
+    tmpDbgFlag |= _CRTDBG_ALLOC_MEM_DF;
+    tmpDbgFlag |= _CRTDBG_LEAK_CHECK_DF;
+    _CrtSetDbgFlag(tmpDbgFlag);
+
+
     std::string s1("12345 67890 my string");
     int iS1 = s1.size();
 
@@ -198,13 +205,15 @@ int main(int argc, char* argv[])
     auto idxs = TheLongestIncSeq(printVector);
 
 
-    ListsAlgorithmRun();
+    ListsAlgorithmRun(); // has memory leaks
 
     printf("\n");
     printf("\n");
 
-    TreeAlgorithmRun();
+    XmlAlgorithmRun();
+    TreeAlgorithmRun(); // has memory leaks
 
+#if 1
     printVector = { 50, 25, 75, 12, 37, 63, 87, 6, 18, 31, 42, 58, 69, 81, 93 };
 
     TreeNodeInt *root = nullptr;
@@ -222,6 +231,7 @@ int main(int argc, char* argv[])
 
     std::sort(printVector.begin(), printVector.end());
     bool bRes = areSame(printVector, root);
+#endif 
 
     PrintParenthesis(3);
 
