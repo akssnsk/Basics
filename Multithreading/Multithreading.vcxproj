@@ -74,8 +74,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Examples.cpp" />
+    <ClCompile Include="Monitor.cpp" />
     <ClCompile Include="MT.cpp" />
     <ClCompile Include="SpinLock.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Examples.h" />
+    <ClInclude Include="Monitor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

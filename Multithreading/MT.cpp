@@ -10,6 +10,9 @@
 
 #include <windows.h>
 
+#include "Examples.h"
+#include "Monitor.h"
+
 void SpinLockRun();
 
 
@@ -261,6 +264,8 @@ int main(int argc, char* argv[])
     //Two();
     //Three();
 
+    MonitorRun();
+    ExamplesRun();
 
     SpinLockRun();
 

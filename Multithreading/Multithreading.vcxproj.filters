@@ -3,5 +3,11 @@
   <ItemGroup>
     <ClCompile Include="MT.cpp" />
     <ClCompile Include="SpinLock.cpp" />
+    <ClCompile Include="Examples.cpp" />
+    <ClCompile Include="Monitor.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Examples.h" />
+    <ClInclude Include="Monitor.h" />
   </ItemGroup>
 </Project>
