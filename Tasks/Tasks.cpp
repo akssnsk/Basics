@@ -398,8 +398,13 @@ size_t BinSearch(const std::vector<int> &searchVector, size_t i, size_t j)
     return (leftVal <= rightVal) ? leftMinIdx : rightMinIdx;
 }
 
-int FindMedian2(const std::vector<int> &vInput, int minParam, int maxParam)
+int FindMedian2(const std::vector<int> &vInput)
 {
+    // STL functionality
+
+    if (vInput.empty())
+        return -1;
+
     std::vector<int> vInputCopy = vInput;
 
     // nth_element works in linear time
@@ -407,51 +412,53 @@ int FindMedian2(const std::vector<int> &vInput, int minParam, int maxParam)
     return vInputCopy[vInput.size() / 2];
 }
 
-int FindMedian1(const std::vector<int> &vInput, int minParam, int maxParam)
+int FindMedian1(const std::vector<int> &vInput)
 {
-    int kindAmount = maxParam - minParam + 1;
+    // Counting
+
+    if (vInput.empty())
+        return -1;
+
+    int maxVal = *std::max_element(vInput.begin(), vInput.end());
+    int minVal = *std::min_element(vInput.begin(), vInput.end());
+
+    int kindAmount = maxVal - minVal + 1;
 
     std::vector<int> HashCounter(kindAmount);
 
     for (auto &i : vInput)
     {
-        HashCounter[i-minParam]++;
+        HashCounter[i - minVal]++;
     }
 
     // hash table iterators
-    size_t i = 0; size_t j = 0;
+    size_t i = 0; size_t j = HashCounter.size() - 1;
 
-    while (i < HashCounter.size() && HashCounter[i] == 0) i++;
-    while (j < HashCounter.size() && HashCounter[HashCounter.size() - j - 1] == 0) j++;
+    size_t i2 = 1;
+    size_t j2 = vInput.size() - 1;
 
-    // source vector iterators
-    size_t i2 = HashCounter[i]-1; i++;
-    size_t j2 = HashCounter[HashCounter.size() - j - 1]; j++;
-
-    size_t distance = std::max(i2, j2);
-    while (distance < vInput.size()/2)
+    // Source vector iterators
+    while (i2 < j2)
     {
-        if (i2 < distance)
+        size_t iDistToBegin = i2;
+        size_t jDistToEnd = vInput.size() - j2 - 1;
+
+        if (iDistToBegin < jDistToEnd)
         {
             while (i < HashCounter.size() && HashCounter[i] == 0) i++;
-            i2 += HashCounter[i]; i++;
-        }  
+            i2 += HashCounter[i] - 1; i++;
+        }
         else
         {
-            while (j < HashCounter.size() && HashCounter[HashCounter.size() - j - 1] == 0) j++;
-            size_t idxR = HashCounter.size() - j - 1;
-            j2 += HashCounter[idxR]; j++;
+            while (j >= 0 && HashCounter[j] == 0) j--;
+            j2 -= HashCounter[j]; j--;
         }
-
-        distance = std::max(i2, j2);
     }
 
-        // src: 1111133^^77777779
+    // src: 1111133^^77777779
 
-        // table: 0123456789
-        //        0502000701
-    size_t idxL = i;
-    size_t idxR = HashCounter.size() - j - 1;
+    // table: 0123456789
+    //        0502000701
 
     return vInput[i2];
 }
@@ -519,10 +526,23 @@ int fibonacchi(int n)
 
 int AllTasks()
 {
-    StringTaskRun();
+    //std::vector<int> vect = { 1, 1, 1, 1, 1, 14, 15, 44, 97 };
+    //std::vector<int> vect = { 1, 1, 1, 1, 1, 14, 15, 44, 97, 97 };
+    //std::vector<int> vect = { 1, 2, 3, 4 };
+    //std::vector<int> vect = { 1, 2, 3 };
+    std::vector<int> vect;
 
-    MaxXor();
+    int iRes2 = FindMedian2(vect);
+
+    int iRes1 = FindMedian1(vect);
+
+
     return 0;
+
+    //StringTaskRun();
+
+    //MaxXor();
+
     //Sherlock();
 
     //ChangeEndian();
@@ -541,15 +561,6 @@ int AllTasks()
     //bool bRet = IsAnagram("qwert  asdfg1", "asdfgqwert");
     //bool bRet = IsAnagram("str1", "str2");
 
-    //std::vector<int> vect = { 1, 1, 1, 1, 1, 14, 15, 44, 97 };
-    //std::vector<int> vect = { 1, 1, 1, 1, 1, 14, 15, 44, 97, 97 };
-
-    //int maxVal = *std::max_element(vect.begin(), vect.end());
-    //int minVal = *std::min_element(vect.begin(), vect.end());
-
-    //int iRes1 = FindMedian1(vect, minVal, maxVal);
-
-    //int iRes2 = FindMedian2(vect, minVal, maxVal);
 
     //ClosestNumbers();
 
