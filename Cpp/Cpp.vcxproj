@@ -140,6 +140,7 @@
     <ClInclude Include="Complex.h" />
     <ClInclude Include="Cpp.h" />
     <ClInclude Include="NumberPlay.h" />
+    <ClInclude Include="SharedPtr.h" />
     <ClInclude Include="Template.h" />
   </ItemGroup>
   <ItemGroup>

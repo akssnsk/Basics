@@ -3,6 +3,7 @@
 
 #include "Cpp.h"
 #include "Complex.h"
+#include "SharedPtr.h"
 #include "NumberPlay.h"
 
 #include "Template.h"
@@ -244,25 +245,31 @@ void FuncPtr()
 
 void ContainerRun()
 {
-    std::vector<int> intVector;
-
     int val = 1;
+    std::vector<int> intVector;
     std::generate_n(std::back_inserter(intVector), 10, [&](){return val++; });
 
     int vMax1 = *std::max_element(intVector.begin(), intVector.end()); // Returns value of max element in vector 
     int idxMin1 = std::min_element(intVector.begin(), intVector.end()) - intVector.begin(); // Returns index of min element in vector 
 
-
-    int sum = std::accumulate(intVector.begin(), intVector.end(), 1, std::multiplies<int>());
+    int sum = std::accumulate(intVector.begin(), intVector.end(), 0);
+    int product = std::accumulate(intVector.begin(), intVector.end(), 1, std::multiplies<int>());
     
     return;
 }
 
 void SharedPrtRun()
 {
-    std::shared_ptr<int> sp1(new int(5));
+    SharedPtr<int> spLocal1;
+    spLocal1 = spLocal1;
+    SharedPtr<int> spLocal2 = spLocal1;
 
+    SharedPtr<int> spLocal3(new int(5));
+
+
+    std::shared_ptr<int> sp1(new int(5));
     std::shared_ptr<int> sp2(sp1);
+    //std::shared_ptr<int> sp3 = new int(7); // is not allowed
 
     sp1.reset();
     sp2.reset();

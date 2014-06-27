@@ -12,5 +12,6 @@
     <ClInclude Include="Complex.h" />
     <ClInclude Include="NumberPlay.h" />
     <ClInclude Include="Template.h" />
+    <ClInclude Include="SharedPtr.h" />
   </ItemGroup>
 </Project>
