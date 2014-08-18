@@ -95,8 +95,6 @@ void UnsynchedOutput()
 }
 
 
-
-
 void MonitorRun()
 {
     std::cout << "UnsynchedOutput\n";
